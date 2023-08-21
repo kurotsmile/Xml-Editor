@@ -259,7 +259,6 @@ public class Xml_Editor : MonoBehaviour
     public void btn_show_edit_name()
     {
         this.box_input_edit_name=this.app.carrot.show_input("Change project name", "Enter new project name",s_name_project);
-        this.box_input_edit_name.set_type(Carrot.Window_Input_Type.act_done);
         this.box_input_edit_name.set_act_done(act_done_input);
     }
 
@@ -273,7 +272,6 @@ public class Xml_Editor : MonoBehaviour
     public void import_project_from_url()
     {
         this.box_input_project_url = this.app.carrot.show_input("Import project from xml web address", "Enter the url xml file (eg https://www.w3schools.com/xml/note.xml)", s_name_project);
-        this.box_input_project_url.set_type(Carrot.Window_Input_Type.act_done);
         this.box_input_project_url.set_act_done(act_import_project_done);
     }
 
