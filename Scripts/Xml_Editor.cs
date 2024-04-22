@@ -1,3 +1,4 @@
+using Carrot;
 using SimpleFileBrowser;
 using System.Collections;
 using System.IO;
@@ -37,6 +38,8 @@ public class Xml_Editor : MonoBehaviour
     public Sprite sp_icon_model_code_full;
     public Sprite sp_icon_model_code_short;
     public Sprite sp_icon_export_file_xml;
+    public Sprite sp_icon_import_file_xml;
+    public Sprite sp_icon_import_url_xml;
 
     private bool is_mode_editor = true;
     private bool is_mode_code_full = true;
@@ -44,7 +47,7 @@ public class Xml_Editor : MonoBehaviour
     private Xml_Item xml_root;
     private string s_name_project;
 
-    private Carrot.Carrot_Box box_list_note;
+    private Carrot.Carrot_Box box;
     private Carrot.Carrot_Window_Input box_input;
     private Carrot.Carrot_Window_Input box_input_edit_name;
     private Carrot.Carrot_Window_Input box_input_project_url;
@@ -128,17 +131,17 @@ public class Xml_Editor : MonoBehaviour
 
     public void show_box_add_note(Xml_Item item_set)
     {
-        this.box_list_note=this.app.carrot.Create_Box("box_list_note");
-        this.box_list_note.set_title("List of xml node objects to add to the tree");
-        this.box_list_note.set_icon(this.sp_icon_box_add);
+        this.box=this.app.carrot.Create_Box("box_list_note");
+        this.box.set_title("List of xml node objects to add to the tree");
+        this.box.set_icon(this.sp_icon_box_add);
 
-        Carrot.Carrot_Box_Item item_note_none = this.box_list_note.create_item();
+        Carrot.Carrot_Box_Item item_note_none = this.box.create_item();
         item_note_none.set_icon(this.sp_icon_box_none);
         item_note_none.set_title("Empty Xml Block");
         item_note_none.set_tip("Add an empty block so that other objects can be inserted later");
         item_note_none.set_act(() => act_add_note_to_box(item_set,XmlNodeType.Element));
 
-        Carrot.Carrot_Box_Item item_note_value = this.box_list_note.create_item();
+        Carrot.Carrot_Box_Item item_note_value = this.box.create_item();
         item_note_value.set_icon(this.sp_icon_node_text);
         item_note_value.set_title("Note whose content is text");
         item_note_value.set_tip("Insert a note block with echoes into the tree");
@@ -147,7 +150,7 @@ public class Xml_Editor : MonoBehaviour
 
     private void act_add_note_to_box(Xml_Item xml_item,XmlNodeType xml_type)
     {
-        if (this.box_list_note != null) this.box_list_note.close();
+        if (this.box != null) this.box.close();
         this.app.carrot.play_sound_click();
         this.box_add.show(xml_item, xml_type);
         this.box_add.set_act_done(act_add_note);
@@ -269,6 +272,23 @@ public class Xml_Editor : MonoBehaviour
         this.s_name_project = s_data;
         this.txt_name_project.text = s_data;
         this.box_input_edit_name.close();
+    }
+
+    public void Show_import()
+    {
+        this.box = app.carrot.Create_Box();
+        this.box.set_icon(sp_icon_box_none);
+        this.box.set_title("Import");
+
+        Carrot_Box_Item item_import_file = this.box.create_item("item_import_file");
+        item_import_file.set_title("Import form file");
+        item_import_file.set_tip("Import project from xml file");
+        item_import_file.set_act(() => this.import_project_from_url());
+
+        Carrot_Box_Item item_import_url = this.box.create_item("item_import_url");
+        item_import_url.set_title("Import form Url");
+        item_import_url.set_tip("Import project from xml web address");
+        item_import_url.set_act(() => this.import_project_from_url());
     }
 
     public void import_project_from_url()
