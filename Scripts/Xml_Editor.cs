@@ -219,7 +219,7 @@ public class Xml_Editor : MonoBehaviour
     public void btn_delete()
     {
         this.app.carrot.play_sound_click();
-        this.box_msg = this.app.carrot.show_msg("Xml Editor", "Are you sure you want to delete this xml project?", Carrot.Msg_Icon.Question);
+        this.box_msg = this.app.carrot.Show_msg("Xml Editor", "Are you sure you want to delete this xml project?", Carrot.Msg_Icon.Question);
         this.box_msg.add_btn_msg("Yes", act_del_project_yes);
         this.box_msg.add_btn_msg("No", act_del_project_no);
     }
@@ -288,7 +288,7 @@ public class Xml_Editor : MonoBehaviour
             yield return www.SendWebRequest();
             if (www.result != UnityWebRequest.Result.Success)
             {
-                this.app.carrot.show_msg("Import Xml", www.error, Carrot.Msg_Icon.Error);
+                this.app.carrot.Show_msg("Import Xml", www.error, Carrot.Msg_Icon.Error);
                 this.box_loading_import_xml.close();
             }
             else

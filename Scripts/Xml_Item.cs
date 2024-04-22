@@ -202,7 +202,7 @@ public class Xml_Item : MonoBehaviour
 
     public void btn_delete()
     {
-        this.box_msg = GameObject.Find("App").GetComponent<Apps>().carrot.show_msg("Xml Node", "Are you sure you want to remove this item?", Carrot.Msg_Icon.Question);
+        this.box_msg = GameObject.Find("App").GetComponent<Apps>().carrot.Show_msg("Xml Node", "Are you sure you want to remove this item?", Carrot.Msg_Icon.Question);
         this.box_msg.add_btn_msg("Yes", act_delete_yes);
         this.box_msg.add_btn_msg("No", act_delete_no);
     }
