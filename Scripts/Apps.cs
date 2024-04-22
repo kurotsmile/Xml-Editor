@@ -100,7 +100,7 @@ public class Apps : MonoBehaviour
     public void btn_import_xml()
     {
         this.carrot.play_sound_click();
-        this.xml.import_project_from_url();
+        this.xml.Show_import();
     }
 
     private void add_scores_rank()

@@ -277,21 +277,29 @@ public class Xml_Editor : MonoBehaviour
     public void Show_import()
     {
         this.box = app.carrot.Create_Box();
-        this.box.set_icon(sp_icon_box_none);
+        this.box.set_icon(this.app.carrot.icon_carrot_add);
         this.box.set_title("Import");
 
         Carrot_Box_Item item_import_file = this.box.create_item("item_import_file");
+        item_import_file.set_icon(this.sp_icon_import_file_xml);
         item_import_file.set_title("Import form file");
         item_import_file.set_tip("Import project from xml file");
         item_import_file.set_act(() => this.import_project_from_url());
 
         Carrot_Box_Item item_import_url = this.box.create_item("item_import_url");
+        item_import_url.set_icon(this.sp_icon_import_url_xml);
         item_import_url.set_title("Import form Url");
         item_import_url.set_tip("Import project from xml web address");
         item_import_url.set_act(() => this.import_project_from_url());
+
     }
 
-    public void import_project_from_url()
+    private void Act_import_from_file()
+    {
+
+    }
+
+    private void import_project_from_url()
     {
         this.box_input_project_url = this.app.carrot.show_input("Import project from xml web address", "Enter the url xml file (eg https://www.w3schools.com/xml/note.xml)", s_name_project);
         this.box_input_project_url.set_act_done(act_import_project_done);
