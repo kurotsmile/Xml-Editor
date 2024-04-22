@@ -1,3 +1,4 @@
+using SimpleFileBrowser;
 using System.Collections;
 using System.IO;
 using System.Xml;
@@ -44,6 +45,7 @@ public class Xml_Editor : MonoBehaviour
     private string s_name_project;
 
     private Carrot.Carrot_Box box_list_note;
+    private Carrot.Carrot_Window_Input box_input;
     private Carrot.Carrot_Window_Input box_input_edit_name;
     private Carrot.Carrot_Window_Input box_input_project_url;
     private Carrot.Carrot_Window_Loading box_loading_import_xml;
@@ -368,14 +370,28 @@ public class Xml_Editor : MonoBehaviour
 
     public void btn_export_file_xml()
     {
-        this.app.carrot.ads.show_ads_Interstitial();
         this.app.carrot.play_sound_click();
-        string path = Application.dataPath + "/"+this.s_name_project+".xml";
-        StreamWriter writer = new StreamWriter(path);
-        writer.Write(this.xml_root.get_code_short());
-        writer.Close();
+        this.app.carrot.ads.show_ads_Interstitial();
+        FileBrowser.ShowSaveDialog(Export_file_xml_done, Export_file_xml_cancel,FileBrowser.PickMode.Files,false);
+    }
 
-        Carrot.Carrot_Window_Input inp_export=this.app.carrot.show_input("Xml Export", "Exported xml file successfully at path ",path);
-        inp_export.set_icon(this.sp_icon_export_file_xml);
+    private void Export_file_xml_done(string[] s_path)
+    {
+        FileBrowser.SetFilters(true, new FileBrowser.Filter("XML data", ".xml", ".rdf", ".rss"), new FileBrowser.Filter("XHTML data", ".xhtml", ".xsl", ".atom"));
+        FileBrowser.SetDefaultFilter(".xml");
+        FileBrowserHelpers.WriteTextToFile(s_path[0], this.xml_root.get_code_short());
+        this.box_input = this.app.carrot.show_input("Xml Export", "Exported xml file successfully at path ", s_path[0]);
+        this.box_input.set_icon(this.sp_icon_export_file_xml);
+        this.box_input.set_act_done(Act_close_msg_export);
+    }
+
+    private void Export_file_xml_cancel()
+    {
+        this.app.carrot.play_sound_click();
+    }
+
+    private void Act_close_msg_export(string s_data)
+    {
+        if (this.box_input != null) this.box_input.close();
     }
 }

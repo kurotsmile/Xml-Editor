@@ -10,7 +10,6 @@ public class Apps : MonoBehaviour
     [Header("Ui")]
     public InputField inp_xml_name;
 
-
     private int scores_rank = 0;
 
     void Start()
