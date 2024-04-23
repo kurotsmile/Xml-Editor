@@ -1,9 +1,11 @@
 using Carrot;
+using Palmmedia.ReportGenerator.Core.Common;
 using SimpleFileBrowser;
 using System.Collections;
 using System.IO;
 using System.Xml;
 using TMPro;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -117,7 +119,6 @@ public class Xml_Editor : MonoBehaviour
 
     public void closer_project()
     {
-        this.app.carrot.ads.create_banner_ads();
         this.save_project();
         this.panel_editor.SetActive(false);
     }
@@ -209,7 +210,6 @@ public class Xml_Editor : MonoBehaviour
 
     public void open_project_xml_by_index(int index)
     {
-        this.app.carrot.ads.Destroy_Banner_Ad();
         this.index_edit = index;
         this.app.carrot.play_sound_click();
         this.index_edit = index;
@@ -284,7 +284,7 @@ public class Xml_Editor : MonoBehaviour
         item_import_file.set_icon(this.sp_icon_import_file_xml);
         item_import_file.set_title("Import form file");
         item_import_file.set_tip("Import project from xml file");
-        item_import_file.set_act(() => this.import_project_from_url());
+        item_import_file.set_act(() => this.Act_import_from_file());
 
         Carrot_Box_Item item_import_url = this.box.create_item("item_import_url");
         item_import_url.set_icon(this.sp_icon_import_url_xml);
@@ -296,7 +296,22 @@ public class Xml_Editor : MonoBehaviour
 
     private void Act_import_from_file()
     {
+        app.carrot.play_sound_click();
+        FileBrowser.SetFilters(true, new FileBrowser.Filter("XML data", ".xml", ".rdf", ".rss"), new FileBrowser.Filter("XHTML data", ".xhtml", ".xsl", ".atom"));
+        FileBrowser.SetDefaultFilter(".xml");
+        FileBrowser.ShowLoadDialog(Act_load_file_xml_done, Act_load_file_xml_cancel, FileBrowser.PickMode.Files, false);
+    }
 
+    private void Act_load_file_xml_done(string[] path)
+    {
+        string s_data = FileBrowserHelpers.ReadTextFromFile(path[0]);
+        this.Load_import_xml(s_data);
+        box?.close();
+    }
+
+    private void Act_load_file_xml_cancel()
+    {
+        box?.close();
     }
 
     private void import_project_from_url()
@@ -323,15 +338,17 @@ public class Xml_Editor : MonoBehaviour
             }
             else
             {
-                this.app.carrot.ads.Destroy_Banner_Ad();
-                Debug.Log(www.downloadHandler.text);
-                this.s_name_project= "Improt xml " + this.app.xml_manager.get_length_project();
-                this.create_project(this.s_name_project, www.downloadHandler.text, false);
-
-                ParseXML(www.downloadHandler.text);
+                this.Load_import_xml(www.downloadHandler.text);
                 this.box_loading_import_xml.close();
             }
         }
+    }
+
+    private void Load_import_xml(string s_data)
+    {
+        this.s_name_project = "Improt xml " + this.app.xml_manager.get_length_project();
+        this.create_project(this.s_name_project, s_data, false);
+        ParseXML(s_data);
     }
 
     void ParseXML(string xmlString)
@@ -399,14 +416,13 @@ public class Xml_Editor : MonoBehaviour
     public void btn_export_file_xml()
     {
         this.app.carrot.play_sound_click();
-        this.app.carrot.ads.show_ads_Interstitial();
+        FileBrowser.SetFilters(true, new FileBrowser.Filter("XML data", ".xml", ".rdf", ".rss"), new FileBrowser.Filter("XHTML data", ".xhtml", ".xsl", ".atom"));
+        FileBrowser.SetDefaultFilter(".xml");
         FileBrowser.ShowSaveDialog(Export_file_xml_done, Export_file_xml_cancel,FileBrowser.PickMode.Files,false);
     }
 
     private void Export_file_xml_done(string[] s_path)
     {
-        FileBrowser.SetFilters(true, new FileBrowser.Filter("XML data", ".xml", ".rdf", ".rss"), new FileBrowser.Filter("XHTML data", ".xhtml", ".xsl", ".atom"));
-        FileBrowser.SetDefaultFilter(".xml");
         FileBrowserHelpers.WriteTextToFile(s_path[0], this.xml_root.get_code_short());
         this.box_input = this.app.carrot.show_input("Xml Export", "Exported xml file successfully at path ", s_path[0]);
         this.box_input.set_icon(this.sp_icon_export_file_xml);
