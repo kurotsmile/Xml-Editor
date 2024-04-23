@@ -113,7 +113,7 @@ public class Xml_Manager : MonoBehaviour
             apps.carrot.show_loading();
             StructuredQuery q = new("code");
             q.Add_where("code_type", Query_OP.EQUAL, "xml");
-            this.apps.carrot.server.Get_doc(q.ToJson(), get_all_data_project);
+            this.apps.carrot.server.Get_doc(q.ToJson(), get_all_data_project,apps.Act_server_fail);
         }
         else
         {
@@ -137,6 +137,8 @@ public class Xml_Manager : MonoBehaviour
             for (int i = 0; i < fc.fire_document.Length; i++)
             {
                 IDictionary data_project = fc.fire_document[i].Get_IDictionary();
+
+                var id_project = data_project["id"].ToString();
                 Carrot_Box_Item item_project = this.box.create_item("item_project_" + i);
                 item_project.set_icon(this.apps.carrot.icon_carrot_database);
                 item_project.set_title(data_project["title"].ToString());
@@ -147,6 +149,13 @@ public class Xml_Manager : MonoBehaviour
                 btn_download.set_icon(apps.carrot.icon_carrot_download);
                 btn_download.set_color(apps.carrot.color_highlight);
                 btn_download.set_act((null));
+
+                Carrot_Box_Btn_Item btn_del = item_project.create_item();
+                btn_del.set_icon(apps.carrot.icon_carrot_download);
+                btn_del.set_color(apps.carrot.color_highlight);
+                btn_del.set_act(()=>this.Act_delete_project(id_project));
+
+                item_project.set_act(()=> Act_download_project(data_project));
             }
         }
         else
@@ -157,6 +166,19 @@ public class Xml_Manager : MonoBehaviour
 
     private void Act_download_project(IDictionary data)
     {
+        string s_data_code = this.apps.xml.ConvertHTMLEntitiesToXML(data["code"].ToString());
+        this.apps.xml.create_project(data["title"].ToString(), s_data_code, false);
+        this.apps.xml.ParseXML(s_data_code);
+        box?.close();
+    }
 
+    private void Act_delete_project(string id)
+    {
+        this.apps.carrot.server.Delete_Doc("code", id, Act_delete_project_done,apps.Act_server_fail);
+    }
+
+    private void Act_delete_project_done(string s_data)
+    {
+        apps.carrot.Show_msg("List Online Project", "Delete online project success", Msg_Icon.Success);
     }
 }

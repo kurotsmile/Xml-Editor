@@ -348,7 +348,7 @@ public class Xml_Editor : MonoBehaviour
         ParseXML(s_data);
     }
 
-    void ParseXML(string xmlString)
+    public void ParseXML(string xmlString)
     {
         this.inp_editor_text.text = xmlString;
         this.app.carrot.clear_contain(this.tr_all_obj);
@@ -457,7 +457,7 @@ public class Xml_Editor : MonoBehaviour
                 data["status"] = "pending";
 
                 string s_data_json = app.carrot.server.Convert_IDictionary_to_json(data);
-                app.carrot.server.Add_Document_To_Collection("code", data["id"].ToString(), s_data_json, Act_upload_project_done, Act_server_fail);
+                app.carrot.server.Add_Document_To_Collection("code", data["id"].ToString(), s_data_json, Act_upload_project_done, app.Act_server_fail);
             });
         }
         else
@@ -477,16 +477,20 @@ public class Xml_Editor : MonoBehaviour
         return htmlEntitiesContent;
     }
 
+    public string ConvertHTMLEntitiesToXML(string xmlContent)
+    {
+        string htmlEntitiesContent = xmlContent;
+        htmlEntitiesContent = Regex.Replace(htmlEntitiesContent, "&amp;", "&");
+        htmlEntitiesContent = Regex.Replace(htmlEntitiesContent, "&lt;", "<");
+        htmlEntitiesContent = Regex.Replace(htmlEntitiesContent, "&gt;", ">");
+        htmlEntitiesContent = Regex.Replace(htmlEntitiesContent, "&quot;", "\"");
+        htmlEntitiesContent = Regex.Replace(htmlEntitiesContent, "&apos;", "'");
+        return htmlEntitiesContent;
+    }
+
     private void Act_upload_project_done(string s_data)
     {
         app.carrot.hide_loading();
         app.carrot.Show_msg(app.carrot.L("upload_project", "Upload Project"), app.carrot.L("upload_project_success", "Successfully backed up the project online, you can share and restore the project through your account"), Msg_Icon.Success);
-    }
-
-    private void Act_server_fail(string s_error)
-    {
-        app.carrot.hide_loading();
-        app.carrot.Show_msg("Error", s_error, Msg_Icon.Error);
-        app.carrot.play_vibrate();
     }
 }

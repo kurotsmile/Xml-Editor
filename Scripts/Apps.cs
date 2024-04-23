@@ -1,3 +1,4 @@
+using Carrot;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -112,5 +113,12 @@ public class Apps : MonoBehaviour
         {
             this.carrot.game.update_scores_player(this.scores_rank);
         }
+    }
+
+    public void Act_server_fail(string s_error)
+    {
+        carrot.hide_loading();
+        carrot.Show_msg("Error", s_error, Msg_Icon.Error);
+        carrot.play_vibrate();
     }
 }
