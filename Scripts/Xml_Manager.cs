@@ -106,10 +106,20 @@ public class Xml_Manager : MonoBehaviour
 
     public void Show_list_online_project()
     {
-        apps.carrot.show_loading();
-        StructuredQuery q = new("code");
-        q.Add_where("code_type", Query_OP.EQUAL, "xml");
-        this.apps.carrot.server.Get_doc(q.ToJson(),get_all_data_project);
+        string s_id_user_login = apps.carrot.user.get_id_user_login();
+
+        if (s_id_user_login != "")
+        {
+            apps.carrot.show_loading();
+            StructuredQuery q = new("code");
+            q.Add_where("code_type", Query_OP.EQUAL, "xml");
+            this.apps.carrot.server.Get_doc(q.ToJson(), get_all_data_project);
+        }
+        else
+        {
+            this.apps.carrot.user.show_login(this.Show_list_online_project);
+        }
+  
     }
 
     private void get_all_data_project(string s_data)
