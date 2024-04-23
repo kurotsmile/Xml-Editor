@@ -1,10 +1,12 @@
 using Carrot;
+using Newtonsoft.Json.Linq;
 using Palmmedia.ReportGenerator.Core.Common;
 using SimpleFileBrowser;
 using System;
 using System.Collections;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Xml;
 using TMPro;
 using Unity.IO.LowLevel.Unsafe;
@@ -451,10 +453,11 @@ public class Xml_Editor : MonoBehaviour
                 app.carrot.show_loading();
                 string s_data_code = PlayerPrefs.GetString("xml_" +this.index_edit+"_data");
                 IDictionary data = (IDictionary)Json.Deserialize("{}");
+                data["id"] = "code" + this.app.carrot.generateID();
                 data["title"] = PlayerPrefs.GetString("xml_"+this.index_edit+"_name");
                 data["code_theme"] = "docco.min.css";
                 data["code_type"] = "xml";
-                data["code"] = s_data_code.Replace("\"", "\\\"");
+                data["code"] = ConvertXMLToHTMLEntities(s_data_code);
                 data["user_id"] = app.carrot.user.get_id_user_login();
                 data["user_lang"] = app.carrot.user.get_lang_user_login();
                 data["status"] = "pending";
@@ -467,6 +470,17 @@ public class Xml_Editor : MonoBehaviour
         {
             app.carrot.user.show_login(this.Btn_public_project);
         }
+    }
+
+    private string ConvertXMLToHTMLEntities(string xmlContent)
+    {
+        string htmlEntitiesContent = xmlContent;
+        htmlEntitiesContent = Regex.Replace(htmlEntitiesContent, "&", "&amp;");
+        htmlEntitiesContent = Regex.Replace(htmlEntitiesContent, "<", "&lt;");
+        htmlEntitiesContent = Regex.Replace(htmlEntitiesContent, ">", "&gt;");
+        htmlEntitiesContent = Regex.Replace(htmlEntitiesContent, "\"", "&quot;");
+        htmlEntitiesContent = Regex.Replace(htmlEntitiesContent, "'", "&apos;");
+        return htmlEntitiesContent;
     }
 
     private void Act_upload_project_done(string s_data)

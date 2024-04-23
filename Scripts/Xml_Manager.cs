@@ -9,12 +9,17 @@ public class Xml_Manager : MonoBehaviour
     public Apps apps;
     public GameObject item_project_prefab;
 
+    [Header("Icon")]
+    public Sprite icon_project;
+
     [Header("Emp Ui")]
     public GameObject panel_new_project;
     public GameObject panel_all_project;
     public Transform tr_all_project;
     public GameObject obj_btn_create_project;
     public GameObject obj_btn_cancel_create_project;
+
+    private Carrot_Box box = null;
 
     private int xml_length = 0;
 
@@ -117,7 +122,17 @@ public class Xml_Manager : MonoBehaviour
         IList list_code =(IList)Json.Deserialize(s_data);
         if (list_code.Count > 0)
         {
+            this.box = this.apps.carrot.Create_Box();
+            this.box.set_icon(this.apps.carrot.lang.icon);
 
+            for(int i = 0; i < list_code.Count; i++)
+            {
+                IDictionary data_project =(IDictionary) list_code[i];
+                Carrot_Box_Item item_project = this.box.create_item("item_project_" + i);
+                item_project.set_icon(this.apps.xml.sp_icon_box_none);
+                item_project.set_title(data_project["title"].ToString());
+                if(data_project["describe"]!=null) item_project.set_tip(data_project["describe"].ToString());
+            }
         }
         else
         {
