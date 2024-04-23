@@ -1,15 +1,8 @@
 using Carrot;
-using Newtonsoft.Json.Linq;
-using Palmmedia.ReportGenerator.Core.Common;
 using SimpleFileBrowser;
-using System;
 using System.Collections;
-using System.IO;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml;
-using TMPro;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -359,7 +352,7 @@ public class Xml_Editor : MonoBehaviour
     {
         this.inp_editor_text.text = xmlString;
         this.app.carrot.clear_contain(this.tr_all_obj);
-        XmlDocument xmlDoc = new XmlDocument();
+        XmlDocument xmlDoc = new();
         xmlDoc.LoadXml(xmlString);
         XmlNode node = xmlDoc.SelectSingleNode("*");
         parse_note_child(node,null);
@@ -367,7 +360,6 @@ public class Xml_Editor : MonoBehaviour
 
     private void parse_note_child(XmlNode node, Xml_Item xml_node_father)
     {
-        Debug.Log("nodes:" + node.Name + " -> " + node.InnerText+" -> type:"+node.GetType()+" value:"+node.Value);
         if (node != null)
         {
             Xml_Item xml_father;
