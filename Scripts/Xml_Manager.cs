@@ -144,4 +144,9 @@ public class Xml_Manager : MonoBehaviour
             apps.carrot.Show_msg("List Online Project", "None list",Msg_Icon.Alert);
         }
     }
+
+    private void Act_download_project(IDictionary data)
+    {
+
+    }
 }

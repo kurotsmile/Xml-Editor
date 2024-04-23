@@ -419,6 +419,7 @@ public class Xml_Editor : MonoBehaviour
 
     private void Export_file_xml_done(string[] s_path)
     {
+        this.app.carrot.play_vibrate();
         FileBrowserHelpers.WriteTextToFile(s_path[0], this.xml_root.get_code_short());
         this.box_input = this.app.carrot.show_input("Xml Export", "Exported xml file successfully at path ", s_path[0]);
         this.box_input.set_icon(this.sp_icon_export_file_xml);
@@ -427,6 +428,7 @@ public class Xml_Editor : MonoBehaviour
 
     private void Export_file_xml_cancel()
     {
+        this.app.carrot.play_vibrate();
         this.app.carrot.play_sound_click();
     }
 
