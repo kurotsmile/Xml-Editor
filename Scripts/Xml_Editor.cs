@@ -1,8 +1,10 @@
 using Carrot;
 using Palmmedia.ReportGenerator.Core.Common;
 using SimpleFileBrowser;
+using System;
 using System.Collections;
 using System.IO;
+using System.Reflection;
 using System.Xml;
 using TMPro;
 using Unity.IO.LowLevel.Unsafe;
@@ -437,5 +439,46 @@ public class Xml_Editor : MonoBehaviour
     private void Act_close_msg_export(string s_data)
     {
         if (this.box_input != null) this.box_input.close();
+    }
+
+    public void Btn_public_project()
+    {
+        string s_id_user_login = this.app.carrot.user.get_id_user_login();
+        if (s_id_user_login != "")
+        {
+            app.carrot.Show_msg(app.carrot.L("upload_project", "Upload Project"), app.carrot.L("upload_project_question", "Are you sure you want to publish and back up this project online?"), () =>
+            {
+                app.carrot.show_loading();
+                string s_data_code = PlayerPrefs.GetString("xml_" +this.index_edit+"_data");
+                IDictionary data = (IDictionary)Json.Deserialize("{}");
+                data["title"] = PlayerPrefs.GetString("xml_"+this.index_edit+"_name");
+                data["code_theme"] = "docco.min.css";
+                data["code_type"] = "xml";
+                data["code"] = s_data_code.Replace("\"", "\\\"");
+                data["user_id"] = app.carrot.user.get_id_user_login();
+                data["user_lang"] = app.carrot.user.get_lang_user_login();
+                data["status"] = "pending";
+
+                string s_data_json = app.carrot.server.Convert_IDictionary_to_json(data);
+                app.carrot.server.Add_Document_To_Collection("code", data["id"].ToString(), s_data_json, Act_upload_project_done, Act_server_fail);
+            });
+        }
+        else
+        {
+            app.carrot.user.show_login(this.Btn_public_project);
+        }
+    }
+
+    private void Act_upload_project_done(string s_data)
+    {
+        app.carrot.hide_loading();
+        app.carrot.Show_msg(app.carrot.L("upload_project", "Upload Project"), app.carrot.L("upload_project_success", "Successfully backed up the project online, you can share and restore the project through your account"), Msg_Icon.Success);
+    }
+
+    private void Act_server_fail(string s_error)
+    {
+        app.carrot.hide_loading();
+        app.carrot.Show_msg("Error", s_error, Msg_Icon.Error);
+        app.carrot.play_vibrate();
     }
 }

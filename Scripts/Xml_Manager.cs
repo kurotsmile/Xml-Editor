@@ -1,3 +1,5 @@
+using Carrot;
+using System.Collections;
 using UnityEngine;
 
 public class Xml_Manager : MonoBehaviour
@@ -98,5 +100,28 @@ public class Xml_Manager : MonoBehaviour
     public int get_length_project()
     {
         return this.xml_length;
+    }
+
+    public void Show_list_online_project()
+    {
+        apps.carrot.show_loading();
+        StructuredQuery q = new("code");
+        q.Add_where("code_type", Query_OP.EQUAL, "xml");
+        this.apps.carrot.server.Get_doc(q.ToJson(),get_all_data_project);
+    }
+
+    private void get_all_data_project(string s_data)
+    {
+        Debug.Log(s_data);
+        apps.carrot.hide_loading();
+        IList list_code =(IList)Json.Deserialize(s_data);
+        if (list_code.Count > 0)
+        {
+
+        }
+        else
+        {
+            apps.carrot.Show_msg("List Online Project", "None list",Msg_Icon.Alert);
+        }
     }
 }
