@@ -17,6 +17,7 @@ public class Xml_Manager : MonoBehaviour
     public GameObject obj_btn_cancel_create_project;
 
     private Carrot_Box box = null;
+    private GameObject obj_box_item_temp = null;
 
     private int xml_length = 0;
 
@@ -106,6 +107,7 @@ public class Xml_Manager : MonoBehaviour
 
     public void Show_list_online_project()
     {
+        apps.carrot.ads.show_ads_Interstitial();
         string s_id_user_login = apps.carrot.user.get_id_user_login();
 
         if (s_id_user_login != "")
@@ -151,9 +153,9 @@ public class Xml_Manager : MonoBehaviour
                 btn_download.set_act((null));
 
                 Carrot_Box_Btn_Item btn_del = item_project.create_item();
-                btn_del.set_icon(apps.carrot.icon_carrot_download);
-                btn_del.set_color(apps.carrot.color_highlight);
-                btn_del.set_act(()=>this.Act_delete_project(id_project));
+                btn_del.set_icon(apps.carrot.sp_icon_del_data);
+                btn_del.set_color(Color.red);
+                btn_del.set_act(()=>this.Act_delete_project(id_project, item_project.gameObject));
 
                 item_project.set_act(()=> Act_download_project(data_project));
             }
@@ -172,13 +174,15 @@ public class Xml_Manager : MonoBehaviour
         box?.close();
     }
 
-    private void Act_delete_project(string id)
+    private void Act_delete_project(string id, GameObject obj_item)
     {
+        this.obj_box_item_temp = obj_item;
         this.apps.carrot.server.Delete_Doc("code", id, Act_delete_project_done,apps.Act_server_fail);
     }
 
     private void Act_delete_project_done(string s_data)
     {
         apps.carrot.Show_msg("List Online Project", "Delete online project success", Msg_Icon.Success);
+        if (this.obj_box_item_temp != null) Destroy(this.obj_box_item_temp);
     }
 }

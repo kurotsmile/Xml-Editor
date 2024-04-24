@@ -1,5 +1,6 @@
 using Carrot;
 using SimpleFileBrowser;
+using System;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -52,6 +53,9 @@ public class Xml_Editor : MonoBehaviour
     private Carrot.Carrot_Window_Input box_input_project_url;
     private Carrot.Carrot_Window_Loading box_loading_import_xml;
     private Carrot.Carrot_Window_Msg box_msg;
+
+    private Carrot_Box_Item item_edit_name;
+    private Carrot_Box_Item item_edit_describe;
 
     public void on_load()
     {
@@ -273,6 +277,7 @@ public class Xml_Editor : MonoBehaviour
 
     public void Show_import()
     {
+        app.carrot.ads.show_ads_Interstitial();
         this.box = app.carrot.Create_Box();
         this.box.set_icon(this.app.carrot.icon_carrot_add);
         this.box.set_title("Import");
@@ -406,6 +411,7 @@ public class Xml_Editor : MonoBehaviour
 
     public void save_project()
     {
+        app.carrot.ads.show_ads_Interstitial();
         this.app.xml_manager.save_project(this.index_edit, this.xml_root.get_code_short());
     }
 
@@ -492,5 +498,54 @@ public class Xml_Editor : MonoBehaviour
     {
         app.carrot.hide_loading();
         app.carrot.Show_msg(app.carrot.L("upload_project", "Upload Project"), app.carrot.L("upload_project_success", "Successfully backed up the project online, you can share and restore the project through your account"), Msg_Icon.Success);
+    }
+
+    public void Btn_show_edit_project()
+    {
+        this.box = this.app.carrot.Create_Box();
+        this.box.set_icon(this.app.carrot.user.icon_user_edit);
+        this.box.set_title("Edit Info project");
+
+        this.item_edit_name = this.box.create_item("item_name");
+        this.item_edit_name.set_title("Project Name");
+        this.item_edit_name.set_tip("Give your project a memorable name");
+        this.item_edit_name.set_type(Box_Item_Type.box_value_input);
+        this.item_edit_name.check_type();
+
+        this.item_edit_describe= this.box.create_item("item_describe");
+        this.item_edit_describe.set_title("Project Describe");
+        this.item_edit_describe.set_tip("Write a description of this project");
+        this.item_edit_describe.set_type(Box_Item_Type.box_value_input);
+        this.item_edit_describe.check_type();
+
+        Carrot_Box_Btn_Panel panel_btn = this.box.create_panel_btn();
+        Carrot_Button_Item btn_done=panel_btn.create_btn("btn_done");
+        btn_done.set_icon_white(app.carrot.icon_carrot_done);
+        btn_done.set_label(app.carrot.L("done", "Done"));
+        btn_done.set_label_color(Color.white);
+        btn_done.set_bk_color(app.carrot.color_highlight);
+        btn_done.set_act_click(() => Act_edit_project_done());
+
+        Carrot_Button_Item btn_cancel = panel_btn.create_btn("btn_cancel");
+        btn_cancel.set_icon_white(app.carrot.icon_carrot_cancel);
+        btn_cancel.set_label(app.carrot.L("cancel", "Cancel"));
+        btn_cancel.set_label_color(Color.white);
+        btn_cancel.set_bk_color(app.carrot.color_highlight);
+        btn_cancel.set_act_click(() => Act_edit_project_cancel());
+    }
+
+    private void Act_edit_project_done()
+    {
+        app.carrot.play_sound_click();
+        PlayerPrefs.SetString("xml_" + this.index_edit + "_name",this.item_edit_name.get_val());
+        PlayerPrefs.SetString("xml_" + this.index_edit + "_describe", this.item_edit_describe.get_val());
+        this.txt_name_project.text = this.item_edit_name.get_val();
+        box?.close();
+    }
+
+    private void Act_edit_project_cancel()
+    {
+        app.carrot.play_sound_click();
+        box?.close();
     }
 }
