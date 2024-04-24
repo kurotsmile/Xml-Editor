@@ -49,7 +49,6 @@ public class Xml_Editor : MonoBehaviour
 
     private Carrot.Carrot_Box box;
     private Carrot.Carrot_Window_Input box_input;
-    private Carrot.Carrot_Window_Input box_input_edit_name;
     private Carrot.Carrot_Window_Input box_input_project_url;
     private Carrot.Carrot_Window_Loading box_loading_import_xml;
     private Carrot.Carrot_Window_Msg box_msg;
@@ -262,19 +261,6 @@ public class Xml_Editor : MonoBehaviour
         this.check_mode_code();
     }
 
-    public void btn_show_edit_name()
-    {
-        this.box_input_edit_name=this.app.carrot.show_input("Change project name", "Enter new project name",s_name_project);
-        this.box_input_edit_name.set_act_done(act_done_input);
-    }
-
-    private void act_done_input(string s_data)
-    {
-        this.s_name_project = s_data;
-        this.txt_name_project.text = s_data;
-        this.box_input_edit_name.close();
-    }
-
     public void Show_import()
     {
         app.carrot.ads.show_ads_Interstitial();
@@ -454,7 +440,8 @@ public class Xml_Editor : MonoBehaviour
                 string s_data_code = PlayerPrefs.GetString("xml_" +this.index_edit+"_data");
                 IDictionary data = (IDictionary)Json.Deserialize("{}");
                 data["id"] = "code" + this.app.carrot.generateID();
-                data["title"] = PlayerPrefs.GetString("xml_"+this.index_edit+"_name");
+                data["title"] = PlayerPrefs.GetString("xml_"+this.index_edit+"_name","");
+                data["describe"] = PlayerPrefs.GetString("xml_" + this.index_edit + "_describe","");
                 data["code_theme"] = "docco.min.css";
                 data["code_type"] = "xml";
                 data["code"] = ConvertXMLToHTMLEntities(s_data_code);
@@ -507,16 +494,20 @@ public class Xml_Editor : MonoBehaviour
         this.box.set_title("Edit Info project");
 
         this.item_edit_name = this.box.create_item("item_name");
+        this.item_edit_name.set_icon(this.app.carrot.icon_carrot_database);
         this.item_edit_name.set_title("Project Name");
         this.item_edit_name.set_tip("Give your project a memorable name");
         this.item_edit_name.set_type(Box_Item_Type.box_value_input);
         this.item_edit_name.check_type();
+        this.item_edit_name.set_val(this.s_name_project);
 
         this.item_edit_describe= this.box.create_item("item_describe");
+        this.item_edit_describe.set_icon(app.carrot.user.icon_user_info);
         this.item_edit_describe.set_title("Project Describe");
         this.item_edit_describe.set_tip("Write a description of this project");
         this.item_edit_describe.set_type(Box_Item_Type.box_value_input);
         this.item_edit_describe.check_type();
+        if (PlayerPrefs.GetString("xml_" + this.index_edit + "_describe", "") != "") this.item_edit_describe.set_val(PlayerPrefs.GetString("xml_" + this.index_edit + "_describe", ""));
 
         Carrot_Box_Btn_Panel panel_btn = this.box.create_panel_btn();
         Carrot_Button_Item btn_done=panel_btn.create_btn("btn_done");
@@ -537,6 +528,7 @@ public class Xml_Editor : MonoBehaviour
     private void Act_edit_project_done()
     {
         app.carrot.play_sound_click();
+        this.s_name_project=this.item_edit_name.get_val();
         PlayerPrefs.SetString("xml_" + this.index_edit + "_name",this.item_edit_name.get_val());
         PlayerPrefs.SetString("xml_" + this.index_edit + "_describe", this.item_edit_describe.get_val());
         this.txt_name_project.text = this.item_edit_name.get_val();

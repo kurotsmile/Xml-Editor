@@ -1,6 +1,7 @@
 using Carrot;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Xml_Manager : MonoBehaviour
 {
@@ -96,6 +97,7 @@ public class Xml_Manager : MonoBehaviour
     public void delete_project(int index_project)
     {
         PlayerPrefs.DeleteKey("xml_" + index_project + "_name");
+        PlayerPrefs.DeleteKey("xml_" + index_project + "_describe");
         PlayerPrefs.DeleteKey("xml_" + index_project + "_data");
         this.on_load_all_data();
     }
@@ -141,6 +143,7 @@ public class Xml_Manager : MonoBehaviour
                 IDictionary data_project = fc.fire_document[i].Get_IDictionary();
 
                 var id_project = data_project["id"].ToString();
+                var url_share = apps.carrot.mainhost + "?p=code&id=" + id_project;
                 Carrot_Box_Item item_project = this.box.create_item("item_project_" + i);
                 item_project.set_icon(this.apps.carrot.icon_carrot_database);
                 item_project.set_title(data_project["title"].ToString());
@@ -150,7 +153,12 @@ public class Xml_Manager : MonoBehaviour
                 Carrot_Box_Btn_Item btn_download = item_project.create_item();
                 btn_download.set_icon(apps.carrot.icon_carrot_download);
                 btn_download.set_color(apps.carrot.color_highlight);
-                btn_download.set_act((null));
+                Destroy(btn_download.GetComponent<Button>());
+
+                Carrot_Box_Btn_Item btn_share = item_project.create_item();
+                btn_share.set_icon(apps.carrot.sp_icon_share);
+                btn_share.set_color(apps.carrot.color_highlight);
+                btn_share.set_act(() => apps.carrot.show_share(url_share, "Share your project with everyone or your friends"));
 
                 Carrot_Box_Btn_Item btn_del = item_project.create_item();
                 btn_del.set_icon(apps.carrot.sp_icon_del_data);
