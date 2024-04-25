@@ -9789,6 +9789,8 @@ MonoBehaviour:
   - done
   - cancel
   - inp_tip
+  - done
+  - cancel
   emp:
   - {fileID: 3938006067878101938}
   - {fileID: 1216973200058121650}
@@ -9805,6 +9807,8 @@ MonoBehaviour:
   - {fileID: 2211353420516796540}
   - {fileID: 6123507963877984014}
   - {fileID: 3356383226952462336}
+  - {fileID: 1831758719571304601}
+  - {fileID: 3826045199318226105}
   List_img_change_icon_lang: []
 --- !u!1 &7888032706672915341
 GameObject:

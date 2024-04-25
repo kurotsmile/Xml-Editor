@@ -72,7 +72,7 @@ public class Apps : MonoBehaviour
         else
         {
             this.carrot.play_vibrate();
-            this.carrot.Show_msg(carrot.L("create_project", "Create Project"), "Project name cannot be empty", Carrot.Msg_Icon.Error);
+            this.carrot.Show_msg(carrot.L("create_project", "Create Project"), carrot.L("project_name_error","Project name cannot be empty!"), Carrot.Msg_Icon.Error);
         }
     }
 

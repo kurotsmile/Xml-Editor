@@ -489,6 +489,7 @@ public class Xml_Editor : MonoBehaviour
 
     public void Btn_show_edit_project()
     {
+        app.carrot.play_sound_click();
         this.box = this.app.carrot.Create_Box();
         this.box.set_icon(this.app.carrot.user.icon_user_edit);
         this.box.set_title(app.carrot.L("edit_info", "Edit Info project"));
@@ -527,6 +528,13 @@ public class Xml_Editor : MonoBehaviour
 
     private void Act_edit_project_done()
     {
+        if (this.item_edit_name.get_val().Trim() == "")
+        {
+            this.app.carrot.Show_msg(app.carrot.L("edit_info", "Edit Info project"), app.carrot.L("project_name_error", "Project name cannot be empty!"), Carrot.Msg_Icon.Error);
+            app.carrot.play_sound_click();
+            return;
+        }
+
         app.carrot.play_sound_click();
         this.s_name_project=this.item_edit_name.get_val();
         PlayerPrefs.SetString("xml_" + this.index_edit + "_name",this.item_edit_name.get_val());

@@ -148,7 +148,7 @@ public class Xml_Manager : MonoBehaviour
                 item_project.set_icon(this.apps.carrot.icon_carrot_database);
                 item_project.set_title(data_project["title"].ToString());
                 if (data_project["describe"] != null) item_project.set_tip(data_project["describe"].ToString());
-                else item_project.set_tip("Project online");
+                else item_project.set_tip(apps.carrot.L("p_online_status","The project has been backed up online"));
 
                 Carrot_Box_Btn_Item btn_download = item_project.create_item();
                 btn_download.set_icon(apps.carrot.icon_carrot_download);
@@ -158,7 +158,7 @@ public class Xml_Manager : MonoBehaviour
                 Carrot_Box_Btn_Item btn_share = item_project.create_item();
                 btn_share.set_icon(apps.carrot.sp_icon_share);
                 btn_share.set_color(apps.carrot.color_highlight);
-                btn_share.set_act(() => { apps.carrot.show_share(url_share, "Share your project with everyone or your friends");apps.carrot.play_sound_click(); });
+                btn_share.set_act(() => { apps.carrot.show_share(url_share, apps.carrot.L("project_share_tip","Share your project with everyone or your friends"));apps.carrot.play_sound_click(); });
 
                 Carrot_Box_Btn_Item btn_del = item_project.create_item();
                 btn_del.set_icon(apps.carrot.sp_icon_del_data);
