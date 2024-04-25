@@ -71,7 +71,7 @@ public class Xml_Editor : MonoBehaviour
         if (this.is_mode_editor)
         {
             this.panel_editor_note.SetActive(true);
-            this.txt_model_project.text = "View Code";
+            this.txt_model_project.text = app.carrot.L("view_code","View Code");
             this.img_model_icon.sprite = this.sp_icon_model_editor;
             this.obj_btn_code_mode.SetActive(false);
         }
@@ -79,7 +79,7 @@ public class Xml_Editor : MonoBehaviour
         {
             this.panel_editor_code.SetActive(true);
             this.inp_editor_text.text = this.xml_root.get_code_full();
-            this.txt_model_project.text = "Editor";
+            this.txt_model_project.text = app.carrot.L("editor", "Data design");
             this.img_model_icon.sprite = this.sp_icon_model_code;
             this.obj_btn_code_mode.SetActive(true);
         }
@@ -91,13 +91,13 @@ public class Xml_Editor : MonoBehaviour
         {
             this.inp_editor_text.text = this.xml_root.get_code_full();
             this.img_model_code_icon.sprite = this.sp_icon_model_code_short;
-            this.txt_model_code_text.text = "Shortened code";
+            this.txt_model_code_text.text = app.carrot.L("short_code", "Shortened code");
         }
         else
         {
             this.inp_editor_text.text = this.xml_root.get_code_short();
             this.img_model_code_icon.sprite = this.sp_icon_model_code_full;
-            this.txt_model_code_text.text = "Nomal code";
+            this.txt_model_code_text.text = app.carrot.L("full_code","Nomal code");
         }
     }
 
@@ -266,18 +266,18 @@ public class Xml_Editor : MonoBehaviour
         app.carrot.ads.show_ads_Interstitial();
         this.box = app.carrot.Create_Box();
         this.box.set_icon(this.app.carrot.icon_carrot_add);
-        this.box.set_title("Import");
+        this.box.set_title(app.carrot.L("import","Import"));
 
         Carrot_Box_Item item_import_file = this.box.create_item("item_import_file");
         item_import_file.set_icon(this.sp_icon_import_file_xml);
-        item_import_file.set_title("Import form file");
-        item_import_file.set_tip("Import project from xml file");
+        item_import_file.set_title(app.carrot.L("import_file","Import form file"));
+        item_import_file.set_tip(app.carrot.L("import_file_tip","Import project from xml file"));
         item_import_file.set_act(() => this.Act_import_from_file());
 
         Carrot_Box_Item item_import_url = this.box.create_item("item_import_url");
         item_import_url.set_icon(this.sp_icon_import_url_xml);
-        item_import_url.set_title("Import form Url");
-        item_import_url.set_tip("Import project from xml web address");
+        item_import_url.set_title(app.carrot.L("import_url","Import form Url"));
+        item_import_url.set_tip(app.carrot.L("import_url_tip","Import project from xml web address"));
         item_import_url.set_act(() => this.import_project_from_url());
 
     }
@@ -413,7 +413,7 @@ public class Xml_Editor : MonoBehaviour
     {
         this.app.carrot.play_vibrate();
         FileBrowserHelpers.WriteTextToFile(s_path[0], this.xml_root.get_code_short());
-        this.box_input = this.app.carrot.show_input("Xml Export", "Exported xml file successfully at path ", s_path[0]);
+        this.box_input = this.app.carrot.show_input(app.carrot.L("export","Xml Export"), "Exported xml file successfully at path ", s_path[0]);
         this.box_input.set_icon(this.sp_icon_export_file_xml);
         this.box_input.set_act_done(Act_close_msg_export);
     }

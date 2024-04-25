@@ -136,7 +136,7 @@ public class Xml_Manager : MonoBehaviour
         {
             this.box = this.apps.carrot.Create_Box();
             this.box.set_icon(this.apps.carrot.lang.icon);
-            this.box.set_title("List Online Project");
+            this.box.set_title(apps.carrot.L("list_p_online","List of projects backed up online"));
 
             for (int i = 0; i < fc.fire_document.Length; i++)
             {
@@ -158,7 +158,7 @@ public class Xml_Manager : MonoBehaviour
                 Carrot_Box_Btn_Item btn_share = item_project.create_item();
                 btn_share.set_icon(apps.carrot.sp_icon_share);
                 btn_share.set_color(apps.carrot.color_highlight);
-                btn_share.set_act(() => apps.carrot.show_share(url_share, "Share your project with everyone or your friends"));
+                btn_share.set_act(() => { apps.carrot.show_share(url_share, "Share your project with everyone or your friends");apps.carrot.play_sound_click(); });
 
                 Carrot_Box_Btn_Item btn_del = item_project.create_item();
                 btn_del.set_icon(apps.carrot.sp_icon_del_data);
@@ -170,7 +170,7 @@ public class Xml_Manager : MonoBehaviour
         }
         else
         {
-            apps.carrot.Show_msg("List Online Project", "None list",Msg_Icon.Alert);
+            apps.carrot.Show_msg(apps.carrot.L("list_p_online", "List of projects backed up online"), apps.carrot.L("list_p_online_none", "The list is empty, you don't have any projects backed up online yet!"), Msg_Icon.Alert);
         }
     }
 

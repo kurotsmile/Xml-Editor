@@ -3378,7 +3378,7 @@ GameObject:
   - component: {fileID: 844110128703986391}
   - component: {fileID: 4053662630682278506}
   m_Layer: 5
-  m_Name: xml_tip
+  m_Name: Panel_new_project_tip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9784,6 +9784,11 @@ MonoBehaviour:
   - backup
   - import
   - export
+  - create_project
+  - create_project_tip
+  - done
+  - cancel
+  - inp_tip
   emp:
   - {fileID: 3938006067878101938}
   - {fileID: 1216973200058121650}
@@ -9795,6 +9800,11 @@ MonoBehaviour:
   - {fileID: 1170121220516558910}
   - {fileID: 6783894131058965976}
   - {fileID: 754010834408466103}
+  - {fileID: 2531276713730472484}
+  - {fileID: 4053662630682278506}
+  - {fileID: 2211353420516796540}
+  - {fileID: 6123507963877984014}
+  - {fileID: 3356383226952462336}
   List_img_change_icon_lang: []
 --- !u!1 &7888032706672915341
 GameObject:
@@ -10989,7 +10999,7 @@ GameObject:
   - component: {fileID: 8244499636169388893}
   - component: {fileID: 2531276713730472484}
   m_Layer: 5
-  m_Name: xml_title
+  m_Name: Panel_new_project_title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
