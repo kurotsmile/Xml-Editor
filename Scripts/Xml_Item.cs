@@ -201,22 +201,7 @@ public class Xml_Item : MonoBehaviour
 
     public void btn_delete()
     {
-        this.box_msg = GameObject.Find("App").GetComponent<Apps>().carrot.Show_msg("Xml Node", "Are you sure you want to remove this item?", Carrot.Msg_Icon.Question);
-        this.box_msg.add_btn_msg("Yes", act_delete_yes);
-        this.box_msg.add_btn_msg("No", act_delete_no);
-    }
-
-    private void act_delete_yes()
-    {
-        if (this.box_menu != null) this.box_menu.close();
-        for (int i = 0; i < this.list_item_child.Count; i++) Destroy(this.list_item_child[i].gameObject);
-        Destroy(this.gameObject);
-        this.box_msg.close();
-    }
-
-    private void act_delete_no()
-    {
-        this.box_msg.close();
+        GameObject.Find("App").GetComponent<Apps>().xml.Delete_node(this);
     }
 
     public void add_attr_item(string s_name,string s_val)
@@ -235,71 +220,7 @@ public class Xml_Item : MonoBehaviour
 
     public void btn_open_menu()
     {
-        this.box_menu = GameObject.Find("App").GetComponent<Apps>().carrot.Create_Box("box_menu");
-        box_menu.set_title("Menu - ("+this.get_s_nodes()+")");
-
-        Carrot.Carrot_Box_Item item_edit = box_menu.create_item("i_edit");
-        item_edit.set_icon(this.sp_icon_node_edit);
-        item_edit.set_title("Edit");
-        item_edit.set_tip("Edit node data");
-        item_edit.set_act(btn_edit);
-
-        if (this.type != XmlNodeType.Text)
-        {
-            Carrot.Carrot_Box_Item item_attr = box_menu.create_item("i_attr");
-            item_attr.set_icon(this.sp_icon_node_attr);
-            item_attr.set_title("Add attributes");
-            item_attr.set_tip("Add properties for node");
-            item_attr.set_act(this.btn_add_attr);
-
-            if (this.list_item_attr.Count > 0)
-            {
-                Carrot.Carrot_Box_Item item_list_attr = box_menu.create_item("i_list_attr");
-                item_list_attr.set_icon(this.sp_icon_node_list_attr);
-                item_list_attr.set_title("List attributes");
-                item_list_attr.set_tip("Displays a list of node's attributes");
-                item_list_attr.set_act(this.btn_show_list_attr);
-            }
-        }
-
-        Carrot.Carrot_Box_Item item_del=box_menu.create_item("i_delete");
-        item_del.set_icon(this.sp_icon_node_del);
-        item_del.set_title("Delete");
-        item_del.set_tip("Delete node");
-        item_del.set_act(this.btn_delete);
-    }
-
-    private void btn_edit()
-    {
-        if (this.box_menu != null) this.box_menu.close();
-        GameObject.Find("App").GetComponent<Apps>().xml.box_add.show_edit(this);
-    }
-
-    private void btn_show_list_attr()
-    {
-        if (this.box_menu != null) this.box_menu.close();
-
-        this.box_menu = GameObject.Find("App").GetComponent<Apps>().carrot.Create_Box("box_attr");
-        this.box_menu.set_icon(this.sp_icon_node_list_attr);
-        this.box_menu.set_title("Attribute list of node");
-
-        for (int i = 0; i < this.list_item_attr.Count; i++)
-        {
-            Carrot.Carrot_Box_Item item_attr=this.box_menu.create_item("item_attr_" + i);
-            item_attr.set_icon(this.sp_icon_node_attr);
-            item_attr.set_title(this.list_item_attr[i].get_s_name());
-            item_attr.set_tip(this.list_item_attr[i].get_s_value());
-
-            var attr_set = this.list_item_attr[i];
-            item_attr.set_act(() => show_edit_attr(attr_set));
-        }
-    }
-
-    private void show_edit_attr(Item_Attr attr)
-    {
-        if (this.box_menu != null) this.box_menu.close();
-
-        GameObject.Find("App").GetComponent<Apps>().xml.box_add.show_edit_attr(attr);
+        GameObject.Find("App").GetComponent<Apps>().xml.show_menu_node(this);
     }
 
     public string get_s_nodes()
@@ -338,5 +259,10 @@ public class Xml_Item : MonoBehaviour
             this.list_item_child[i].collect_all_child(is_c);
             this.list_item_child[i].gameObject.SetActive(is_c);
         }
+    }
+
+    public List<Item_Attr> get_list_item_attr()
+    {
+        return this.list_item_attr;
     }
 }

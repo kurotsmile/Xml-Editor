@@ -8800,6 +8800,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dd49edf1c418cb4aac1e2534c46e821, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  app: {fileID: 7692485195014428360}
   sp_icon_attr: {fileID: 21300000, guid: cc201838d954c024989531e430f4707c, type: 3}
   sp_icon_note: {fileID: 21300000, guid: a245ed2214b016046be93092a866a60b, type: 3}
   sp_icon_text: {fileID: 21300000, guid: 9bcc49167041e3944a0b147ddd759c1c, type: 3}
@@ -9791,6 +9792,10 @@ MonoBehaviour:
   - inp_tip
   - done
   - cancel
+  - inp_tip
+  - inp_tip
+  - n_name
+  - n_val
   emp:
   - {fileID: 3938006067878101938}
   - {fileID: 1216973200058121650}
@@ -9809,6 +9814,10 @@ MonoBehaviour:
   - {fileID: 3356383226952462336}
   - {fileID: 1831758719571304601}
   - {fileID: 3826045199318226105}
+  - {fileID: 3373534638848403298}
+  - {fileID: 117032012761938955}
+  - {fileID: 6916820848987288978}
+  - {fileID: 291817386542528862}
   List_img_change_icon_lang: []
 --- !u!1 &7888032706672915341
 GameObject:
@@ -11652,7 +11661,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 181.83382, y: -20.75}
+  m_AnchoredPosition: {x: 181.8338, y: -20.75}
   m_SizeDelta: {x: 117.88921, y: 35.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5297106671067797851

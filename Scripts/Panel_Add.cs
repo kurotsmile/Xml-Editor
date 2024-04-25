@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class Panel_Add : MonoBehaviour
 {
+    [Header("Obj Main")]
+    public Apps app;
+
     [Header("Asset icon")]
     public Sprite sp_icon_attr;
     public Sprite sp_icon_note;
@@ -88,8 +91,8 @@ public class Panel_Add : MonoBehaviour
         if (this.xml_node_type == XmlNodeType.Attribute)
         {
             this.img_icon.sprite = this.sp_icon_attr;
-            this.txt_title.text = "Add xml Attributes";
-            this.txt_tip.text = "Enter the attribute information";
+            this.txt_title.text = app.carrot.L("add_node_attr", "Add xml Attributes");
+            this.txt_tip.text = app.carrot.L("add_node_attr_tip","Enter the attribute information");
             this.pane_add_name.SetActive(true);
             this.pane_add_value.SetActive(true);
         }
@@ -97,8 +100,8 @@ public class Panel_Add : MonoBehaviour
         if (this.xml_node_type == XmlNodeType.Element)
         {
             this.img_icon.sprite = this.sp_icon_note;
-            this.txt_title.text = "Add xml node";
-            this.txt_tip.text = "Enter the node block name";
+            this.txt_title.text = app.carrot.L("add_node","Add xml node");
+            this.txt_tip.text = app.carrot.L("add_node_tip", "Enter the node block name");
             this.pane_add_name.SetActive(true);
             this.pane_add_value.SetActive(false);
         }
@@ -106,8 +109,8 @@ public class Panel_Add : MonoBehaviour
         if (this.xml_node_type == XmlNodeType.Text)
         {
             this.img_icon.sprite = this.sp_icon_text;
-            this.txt_title.text = "Paragraph text node";
-            this.txt_tip.text = "Enter text for the object";
+            this.txt_title.text = app.carrot.L("add_text_node","Paragraph text node");
+            this.txt_tip.text = app.carrot.L("add_text_node_tip","Enter text for the object");
             this.pane_add_name.SetActive(false);
             this.pane_add_value.SetActive(true);
         }
@@ -134,8 +137,8 @@ public class Panel_Add : MonoBehaviour
     {
         this.item_attr = item_attr;
         this.img_icon.sprite = this.sp_icon_attr;
-        this.txt_title.text = "Edit Attributes";
-        this.txt_tip.text = "Enter the attribute information";
+        this.txt_title.text = app.carrot.L("edit_attr","Edit Attributes");
+        this.txt_tip.text = app.carrot.L("edit_attr","Enter the attribute information");
         this.pane_add_name.SetActive(true);
         this.pane_add_value.SetActive(true);
         this.inp_name.text = item_attr.get_s_name();

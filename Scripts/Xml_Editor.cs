@@ -2,6 +2,7 @@ using Carrot;
 using SimpleFileBrowser;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Xml;
 using UnityEngine;
@@ -48,6 +49,7 @@ public class Xml_Editor : MonoBehaviour
     private string s_name_project;
 
     private Carrot.Carrot_Box box;
+    private Carrot.Carrot_Box box_sub;
     private Carrot.Carrot_Window_Input box_input;
     private Carrot.Carrot_Window_Input box_input_project_url;
     private Carrot.Carrot_Window_Loading box_loading_import_xml;
@@ -82,6 +84,7 @@ public class Xml_Editor : MonoBehaviour
             this.txt_model_project.text = app.carrot.L("editor", "Data design");
             this.img_model_icon.sprite = this.sp_icon_model_code;
             this.obj_btn_code_mode.SetActive(true);
+            this.check_mode_code();
         }
     }
 
@@ -123,29 +126,22 @@ public class Xml_Editor : MonoBehaviour
         this.panel_editor.SetActive(false);
     }
 
-    public void show_list_attr()
-    {
-        Carrot.Carrot_Box box_list_attr = this.app.carrot.Create_Box("list_attr");
-        box_list_attr.set_title("Attributes list");
-        box_list_attr.set_icon(this.sp_icon_attributes);
-    }
-
     public void show_box_add_note(Xml_Item item_set)
     {
         this.box=this.app.carrot.Create_Box("box_list_note");
-        this.box.set_title("List of xml node objects to add to the tree");
+        this.box.set_title(app.carrot.L("list_obj_add_node","List of xml node objects to add to the tree"));
         this.box.set_icon(this.sp_icon_box_add);
 
         Carrot.Carrot_Box_Item item_note_none = this.box.create_item();
         item_note_none.set_icon(this.sp_icon_box_none);
-        item_note_none.set_title("Empty Xml Block");
-        item_note_none.set_tip("Add an empty block so that other objects can be inserted later");
+        item_note_none.set_title(app.carrot.L("node_none", "Empty Xml Block"));
+        item_note_none.set_tip(app.carrot.L("node_none_tip","Add an empty block so that other objects can be inserted later"));
         item_note_none.set_act(() => act_add_note_to_box(item_set,XmlNodeType.Element));
 
         Carrot.Carrot_Box_Item item_note_value = this.box.create_item();
         item_note_value.set_icon(this.sp_icon_node_text);
-        item_note_value.set_title("Note whose content is text");
-        item_note_value.set_tip("Insert a note block with echoes into the tree");
+        item_note_value.set_title(app.carrot.L("node_content","Note whose content is text"));
+        item_note_value.set_tip(app.carrot.L("node_content_tip", "Insert a note block with echoes into the tree"));
         item_note_value.set_act(() => act_add_note_to_box(item_set,XmlNodeType.Text));
     }
 
@@ -224,9 +220,9 @@ public class Xml_Editor : MonoBehaviour
     public void btn_delete()
     {
         this.app.carrot.play_sound_click();
-        this.box_msg = this.app.carrot.Show_msg("Xml Editor", "Are you sure you want to delete this xml project?", Carrot.Msg_Icon.Question);
-        this.box_msg.add_btn_msg("Yes", act_del_project_yes);
-        this.box_msg.add_btn_msg("No", act_del_project_no);
+        this.box_msg = this.app.carrot.Show_msg(app.carrot.L("editor", "Xml Editor"), "Are you sure you want to delete this xml project?", Carrot.Msg_Icon.Question);
+        this.box_msg.add_btn_msg(app.carrot.L("msg_yes", "Yes"), act_del_project_yes);
+        this.box_msg.add_btn_msg(app.carrot.L("cancel","No"), act_del_project_no);
     }
 
     private void act_del_project_yes()
@@ -304,7 +300,7 @@ public class Xml_Editor : MonoBehaviour
 
     private void import_project_from_url()
     {
-        this.box_input_project_url = this.app.carrot.show_input("Import project from xml web address", "Enter the url xml file (eg https://www.w3schools.com/xml/note.xml)", s_name_project);
+        this.box_input_project_url = this.app.carrot.show_input(app.carrot.L("import_url", "Import form Url"),app.carrot.L("import_url_address","Enter the url xml file (eg https://www.w3schools.com/xml/note.xml)"), s_name_project);
         this.box_input_project_url.set_act_done(act_import_project_done);
     }
 
@@ -321,7 +317,7 @@ public class Xml_Editor : MonoBehaviour
             yield return www.SendWebRequest();
             if (www.result != UnityWebRequest.Result.Success)
             {
-                this.app.carrot.Show_msg("Import Xml", www.error, Carrot.Msg_Icon.Error);
+                this.app.carrot.Show_msg(app.carrot.L("import_url", "Import form Url"), www.error, Carrot.Msg_Icon.Error);
                 this.box_loading_import_xml.close();
             }
             else
@@ -547,5 +543,87 @@ public class Xml_Editor : MonoBehaviour
     {
         app.carrot.play_sound_click();
         box?.close();
+    }
+
+    public void show_menu_node(Xml_Item item_xml)
+    {
+        app.carrot.play_sound_click();
+        this.box = app.carrot.Create_Box("box_menu");
+        this.box.set_title(app.carrot.L("n_menu","Menu")+" - (" + item_xml.get_s_nodes() + ")");
+
+        Carrot.Carrot_Box_Item item_edit = this.box.create_item("i_edit");
+        item_edit.set_icon(item_xml.sp_icon_node_edit);
+        item_edit.set_title(app.carrot.L("edit_info","Edit"));
+        item_edit.set_tip(app.carrot.L("n_edit_tip","Edit node data"));
+        item_edit.set_act(()=>{
+            box?.close();
+            app.xml.box_add.show_edit(item_xml);
+        });
+
+        if (item_xml.type != XmlNodeType.Text)
+        {
+            Carrot.Carrot_Box_Item item_attr = box.create_item("i_attr");
+            item_attr.set_icon(item_xml.sp_icon_node_attr);
+            item_attr.set_title(app.carrot.L("add_node_attr","Add attributes"));
+            item_attr.set_tip(app.carrot.L("n_add_attr_tip", "Add properties for node"));
+            item_attr.set_act(()=> {
+                item_xml.btn_add_attr();
+                box?.close();
+            });
+
+            List<Item_Attr> list_attr = item_xml.get_list_item_attr();
+            if (list_attr.Count > 0)
+            {
+                Carrot.Carrot_Box_Item item_list_attr = box.create_item("i_list_attr");
+                item_list_attr.set_icon(item_xml.sp_icon_node_list_attr);
+                item_list_attr.set_title(app.carrot.L("n_list_attr", "List attributes"));
+                item_list_attr.set_tip(app.carrot.L("n_list_attr_tip","Displays a list of node's attributes"));
+                item_list_attr.set_act(()=> btn_show_list_attr(item_xml));
+            }
+        }
+
+        Carrot.Carrot_Box_Item item_del = box.create_item("i_delete");
+        item_del.set_icon(item_xml.sp_icon_node_del);
+        item_del.set_title(app.carrot.L("delete","Delete"));
+        item_del.set_tip(app.carrot.L("n_delete_tip","Delete the data node and its child nodes"));
+        item_del.set_act(()=> Delete_node(item_xml));
+    }
+
+    public void Delete_node(Xml_Item xml_item)
+    {
+        app.carrot.play_sound_click();
+        app.carrot.Show_msg(app.carrot.L("delete", "Delete"), app.carrot.L("n_delete_question", "Are you sure you want to remove this item?"), () =>
+        {
+            List<Xml_Item> list_child= xml_item.get_list_child();
+            for (int i = 0; i < list_child.Count; i++) Destroy(list_child[i].gameObject);
+            Destroy(xml_item.gameObject);
+        });
+    }
+
+
+    public void btn_show_list_attr(Xml_Item xml_item)
+    {
+        box_sub?.close();
+        this.box_sub = app.carrot.Create_Box("box_attr");
+        this.box_sub.set_icon(xml_item.sp_icon_node_list_attr);
+        this.box_sub.set_title(app.carrot.L("n_list_attr", "List attributes"));
+
+        List<Item_Attr> list_attr = xml_item.get_list_item_attr();
+        for (int i = 0; i < list_attr.Count; i++)
+        {
+            Carrot.Carrot_Box_Item item_attr = this.box_sub.create_item("item_attr_" + i);
+            item_attr.set_icon(xml_item.sp_icon_node_attr);
+            item_attr.set_title(list_attr[i].get_s_name());
+            item_attr.set_tip(list_attr[i].get_s_value());
+
+            var attr_set = list_attr[i];
+            item_attr.set_act(() => show_edit_attr(attr_set));
+        }
+    }
+
+    private void show_edit_attr(Item_Attr attr)
+    {
+        box_sub?.close();
+        app.xml.box_add.show_edit_attr(attr);
     }
 }
