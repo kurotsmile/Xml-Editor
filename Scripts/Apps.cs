@@ -10,13 +10,14 @@ public class Apps : MonoBehaviour
 
     [Header("Ui")]
     public InputField inp_xml_name;
-
+    public AudioSource sound_background;
     private int scores_rank = 0;
 
     void Start()
     {
         this.carrot.Load_Carrot(this.check_exit_app);
         this.carrot.act_after_delete_all_data = this.act_delete_all_data;
+        this.carrot.game.load_bk_music(this.sound_background);
 
         this.xml.on_load();
         this.xml_manager.on_load();
@@ -47,11 +48,6 @@ public class Apps : MonoBehaviour
         this.carrot.show_rate();
     }
 
-    public void btn_share()
-    {
-        this.carrot.show_share();
-    }
-
     public void btn_user()
     {
         this.carrot.user.show_login();
@@ -76,7 +72,7 @@ public class Apps : MonoBehaviour
         else
         {
             this.carrot.play_vibrate();
-            this.carrot.Show_msg("Create Project", "Project name cannot be empty", Carrot.Msg_Icon.Error);
+            this.carrot.Show_msg(carrot.L("create_project", "Create Project"), "Project name cannot be empty", Carrot.Msg_Icon.Error);
         }
     }
 

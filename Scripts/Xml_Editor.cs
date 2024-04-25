@@ -491,20 +491,20 @@ public class Xml_Editor : MonoBehaviour
     {
         this.box = this.app.carrot.Create_Box();
         this.box.set_icon(this.app.carrot.user.icon_user_edit);
-        this.box.set_title("Edit Info project");
+        this.box.set_title(app.carrot.L("edit_info", "Edit Info project"));
 
         this.item_edit_name = this.box.create_item("item_name");
         this.item_edit_name.set_icon(this.app.carrot.icon_carrot_database);
-        this.item_edit_name.set_title("Project Name");
-        this.item_edit_name.set_tip("Give your project a memorable name");
+        this.item_edit_name.set_title(app.carrot.L("project_name","Project Name"));
+        this.item_edit_name.set_tip(app.carrot.L("project_name_tip", "Give your project a memorable name"));
         this.item_edit_name.set_type(Box_Item_Type.box_value_input);
         this.item_edit_name.check_type();
         this.item_edit_name.set_val(this.s_name_project);
 
         this.item_edit_describe= this.box.create_item("item_describe");
         this.item_edit_describe.set_icon(app.carrot.user.icon_user_info);
-        this.item_edit_describe.set_title("Project Describe");
-        this.item_edit_describe.set_tip("Write a description of this project");
+        this.item_edit_describe.set_title(app.carrot.L("project_describe", "Project Describe"));
+        this.item_edit_describe.set_tip(app.carrot.L("project_describe_tip", "Write a description of this project"));
         this.item_edit_describe.set_type(Box_Item_Type.box_value_input);
         this.item_edit_describe.check_type();
         if (PlayerPrefs.GetString("xml_" + this.index_edit + "_describe", "") != "") this.item_edit_describe.set_val(PlayerPrefs.GetString("xml_" + this.index_edit + "_describe", ""));
