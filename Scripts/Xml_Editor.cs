@@ -52,7 +52,6 @@ public class Xml_Editor : MonoBehaviour
     private Carrot.Carrot_Window_Input box_input;
     private Carrot.Carrot_Window_Input box_input_project_url;
     private Carrot.Carrot_Window_Loading box_loading_import_xml;
-    private Carrot.Carrot_Window_Msg box_msg;
 
     private Carrot_Box_Item item_edit_name;
     private Carrot_Box_Item item_edit_describe;
@@ -219,7 +218,7 @@ public class Xml_Editor : MonoBehaviour
     public void btn_delete()
     {
         this.app.carrot.play_sound_click();
-        this.box_msg = this.app.carrot.Show_msg(app.carrot.L("editor", "Xml Editor"), app.carrot.L("p_delete_question", "Are you sure you want to delete this xml project?"), () =>
+        this.app.carrot.Show_msg(app.carrot.L("editor", "Xml Editor"), app.carrot.L("p_delete_question", "Are you sure you want to delete this xml project?"), () =>
         {
             this.app.xml_manager.delete_project(this.index_edit);
             this.panel_editor.SetActive(false);
@@ -592,7 +591,6 @@ public class Xml_Editor : MonoBehaviour
 
     public void btn_show_list_attr(Xml_Item xml_item)
     {
-        box_sub?.close();
         this.box_sub = app.carrot.Create_Box("box_attr");
         this.box_sub.set_icon(xml_item.sp_icon_node_list_attr);
         this.box_sub.set_title(app.carrot.L("n_list_attr", "List attributes"));
@@ -600,7 +598,7 @@ public class Xml_Editor : MonoBehaviour
         List<Item_Attr> list_attr = xml_item.get_list_item_attr();
         for (int i = 0; i < list_attr.Count; i++)
         {
-            Carrot.Carrot_Box_Item item_attr = this.box_sub.create_item("item_attr_" + i);
+            Carrot_Box_Item item_attr = this.box_sub.create_item("item_attr_" + i);
             item_attr.set_icon(xml_item.sp_icon_node_attr);
             item_attr.set_title(list_attr[i].get_s_name());
             item_attr.set_tip(list_attr[i].get_s_value());
@@ -613,6 +611,7 @@ public class Xml_Editor : MonoBehaviour
     private void show_edit_attr(Item_Attr attr)
     {
         box_sub?.close();
+        box?.close();
         app.xml.box_add.show_edit_attr(attr);
     }
 

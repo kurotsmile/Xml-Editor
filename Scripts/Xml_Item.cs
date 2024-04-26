@@ -132,36 +132,16 @@ public class Xml_Item : MonoBehaviour
 
     public string get_code_short()
     {
-        string s_data = "";
+        string s_data;
         if (this.type == XmlNodeType.Text)
         {
             s_data = this.s_note;
         }
         else
         {
-            /*
-            if (this.list_item_child.Count == 1)
-            {
-                Xml_Item xml_nodes = this.list_item_child[0];
-                if (xml_nodes.type == XmlNodeType.Text )
-                    s_data ="<" + this.s_note + this.get_s_attr() + ">" + xml_nodes.s_note + "</" + this.s_note + ">";
-                else
-                {
-                    s_data ="<" + this.s_note + this.get_s_attr() + ">";
-                    for (int i = 0; i < this.list_item_child.Count; i++) s_data = s_data + this.list_item_child[i].get_code_short();
-                    s_data = s_data + "</" + this.s_note + ">";
-                }
-            }
-            else
-            {
-                s_data = "<" + this.s_note + this.get_s_attr() + ">";
-                for (int i = 0; i < this.list_item_child.Count; i++)s_data = s_data + this.list_item_child[i].get_code_short();
-                s_data = s_data + "</" + this.s_note + ">";
-            }*/
-
-                s_data = "<" + this.s_note + this.get_s_attr() + ">";
-                for (int i = 0; i < this.list_item_child.Count; i++) if (this.list_item_child[i]!=null) s_data+=this.list_item_child[i].get_code_short();
-                s_data+="</" + this.s_note + ">";
+            s_data = "<" + this.s_note + this.get_s_attr() + ">";
+            for (int i = 0; i < this.list_item_child.Count; i++) if (this.list_item_child[i] != null) s_data += this.list_item_child[i].get_code_short();
+            s_data += "</" + this.s_note + ">";
         }
 
         return s_data;
@@ -190,8 +170,11 @@ public class Xml_Item : MonoBehaviour
     {
         for (int i = 0; i < list_item_child.Count; i++)
         {
-            if(this.list_item_child[i]!=null)this.list_item_child[i].Delete_all_child();
-            Destroy(this.list_item_child[i].gameObject);
+            if (this.list_item_child[i] != null)
+            {
+                this.list_item_child[i].Delete_all_child();
+                Destroy(this.list_item_child[i].gameObject);
+            }
         }
         this.list_item_child.Clear();
         this.list_item_child= null;
