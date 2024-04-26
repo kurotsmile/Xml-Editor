@@ -148,8 +148,10 @@ public class Xml_Manager : MonoBehaviour
                 Carrot_Box_Item item_project = this.box.create_item("item_project_" + i);
                 item_project.set_icon(this.apps.carrot.icon_carrot_database);
                 item_project.set_title(data_project["title"].ToString());
-                if (data_project["describe"] != null) item_project.set_tip(data_project["describe"].ToString());
-                else item_project.set_tip(apps.carrot.L("p_online_status","The project has been backed up online"));
+                if (data_project["describe"] != null) 
+                    item_project.set_tip(data_project["describe"].ToString());
+                else 
+                    item_project.set_tip(apps.carrot.L("p_online_status","The project has been backed up online"));
 
                 Carrot_Box_Btn_Item btn_download = item_project.create_item();
                 btn_download.set_icon(apps.carrot.icon_carrot_download);

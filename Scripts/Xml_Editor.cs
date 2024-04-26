@@ -200,6 +200,12 @@ public class Xml_Editor : MonoBehaviour
         Xml_Item xml_p = obj_note.GetComponent<Xml_Item>();
         xml_p.On_load(type, item_xml_father);
         xml_p.set_title(s_val);
+
+        if (type == XmlNodeType.Text)
+            xml_p.set_tip(app.carrot.L("node_text_tip", "Is the text content object of node"));
+        else
+            xml_p.set_tip(app.carrot.L("node_tip", "Click here to add more properties"));
+
         return xml_p;
     }
 

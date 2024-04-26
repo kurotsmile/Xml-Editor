@@ -56,7 +56,6 @@ public class Xml_Item : MonoBehaviour
             this.img_icon.color= new Color32(255, 119, 0, 255);
             this.txt_title.color = new Color32(255, 119, 0, 255);
             this.txt_tip.color = new Color32(255, 154, 0, 225);
-            this.txt_tip.text = "As text object";
             this.obj_btn_add_node.SetActive(false);
             this.obj_btn_add_attr.SetActive(false);
             this.obj_btn_collect.SetActive(false);
