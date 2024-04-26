@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -220,21 +221,11 @@ public class Xml_Editor : MonoBehaviour
     public void btn_delete()
     {
         this.app.carrot.play_sound_click();
-        this.box_msg = this.app.carrot.Show_msg(app.carrot.L("editor", "Xml Editor"), "Are you sure you want to delete this xml project?", Carrot.Msg_Icon.Question);
-        this.box_msg.add_btn_msg(app.carrot.L("msg_yes", "Yes"), act_del_project_yes);
-        this.box_msg.add_btn_msg(app.carrot.L("cancel","No"), act_del_project_no);
-    }
-
-    private void act_del_project_yes()
-    {
-        if (this.box_msg != null) this.box_msg.close();
-        this.app.xml_manager.delete_project(this.index_edit);
-        this.panel_editor.SetActive(false);
-    }
-
-    private void act_del_project_no()
-    {
-        if (this.box_msg != null) this.box_msg.close();
+        this.box_msg = this.app.carrot.Show_msg(app.carrot.L("editor", "Xml Editor"), app.carrot.L("p_delete_question", "Are you sure you want to delete this xml project?"), () =>
+        {
+            this.app.xml_manager.delete_project(this.index_edit);
+            this.panel_editor.SetActive(false);
+        });
     }
 
     public void btn_change_mode_editor()
@@ -595,11 +586,15 @@ public class Xml_Editor : MonoBehaviour
         app.carrot.Show_msg(app.carrot.L("delete", "Delete"), app.carrot.L("n_delete_question", "Are you sure you want to remove this item?"), () =>
         {
             List<Xml_Item> list_child= xml_item.get_list_child();
-            for (int i = 0; i < list_child.Count; i++) Destroy(list_child[i].gameObject);
+            for (int i = 0; i < list_child.Count; i++)
+            {
+               if(list_child[i]!=null) Destroy(list_child[i].gameObject);
+            }
             Destroy(xml_item.gameObject);
+            box?.close();
+            box_sub?.close();
         });
     }
-
 
     public void btn_show_list_attr(Xml_Item xml_item)
     {
@@ -625,5 +620,12 @@ public class Xml_Editor : MonoBehaviour
     {
         box_sub?.close();
         app.xml.box_add.show_edit_attr(attr);
+    }
+
+    public void Btn_save()
+    {
+        app.carrot.play_sound_click();
+        PlayerPrefs.SetString("xml_" + this.index_edit + "_data", this.xml_root.get_code_short());
+        app.carrot.Show_msg(app.carrot.L("editor", "Data design"),app.carrot.L("p_update_success","Successful project update!"), Msg_Icon.Success);
     }
 }

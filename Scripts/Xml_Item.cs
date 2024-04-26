@@ -40,8 +40,6 @@ public class Xml_Item : MonoBehaviour
     private List<Xml_Item> list_item_child;
     private List<Item_Attr> list_item_attr;
 
-    private Carrot.Carrot_Window_Msg box_msg;
-    private Carrot.Carrot_Box box_menu;
 
     public void on_load(XmlNodeType type_node,Xml_Item xml_item_father)
     {
@@ -94,7 +92,6 @@ public class Xml_Item : MonoBehaviour
 
     public void btn_add_attr()
     {
-        if (this.box_menu != null) this.box_menu.close();
         GameObject.Find("App").GetComponent<Apps>().xml.show_box_add_attr(this);
     }
 

@@ -117,6 +117,7 @@ public class Xml_Manager : MonoBehaviour
             apps.carrot.show_loading();
             StructuredQuery q = new("code");
             q.Add_where("code_type", Query_OP.EQUAL, "xml");
+            q.Add_where("user_id", Query_OP.EQUAL, s_id_user_login);
             this.apps.carrot.server.Get_doc(q.ToJson(), get_all_data_project,apps.Act_server_fail);
         }
         else
@@ -184,13 +185,16 @@ public class Xml_Manager : MonoBehaviour
 
     private void Act_delete_project(string id, GameObject obj_item)
     {
-        this.obj_box_item_temp = obj_item;
-        this.apps.carrot.server.Delete_Doc("code", id, Act_delete_project_done,apps.Act_server_fail);
+        apps.carrot.Show_msg(apps.carrot.L("delete", "Delete"), apps.carrot.L("n_delete_question", "Are you sure you want to remove this item?"), () =>
+        {
+            this.obj_box_item_temp = obj_item;
+            this.apps.carrot.server.Delete_Doc("code", id, Act_delete_project_done, apps.Act_server_fail);
+        });
     }
 
     private void Act_delete_project_done(string s_data)
     {
-        apps.carrot.Show_msg("List Online Project", "Delete online project success", Msg_Icon.Success);
+        apps.carrot.Show_msg(apps.carrot.L("list_p_online", "List of projects backed up online"), apps.carrot.L("p_delete_success","Delete online project success"), Msg_Icon.Success);
         if (this.obj_box_item_temp != null) Destroy(this.obj_box_item_temp);
     }
 }
