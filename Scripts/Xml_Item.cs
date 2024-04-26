@@ -109,7 +109,7 @@ public class Xml_Item : MonoBehaviour
     private string get_space()
     {
         string s_space = "";
-        for(int i = 0; i < this.x; i++) s_space = s_space + "\t";
+        for(int i = 0; i < this.x; i++) s_space += "\t";
         return s_space;
     }
 
@@ -118,28 +118,13 @@ public class Xml_Item : MonoBehaviour
         string s_data;
         if (this.type == XmlNodeType.Text)
         {
-            s_data =this.s_note;
+            s_data = this.get_space()+this.s_note+"\n";
         }
         else
         {
-            if (this.list_item_child.Count==1)
-            {
-                Xml_Item xml_nodes = this.list_item_child[0];
-                if(xml_nodes.type== XmlNodeType.Text)
-                    s_data = this.get_space() + "<" + this.s_note + this.get_s_attr() + ">"+ xml_nodes.s_note+ "</" + this.s_note + ">\n";
-                else
-                {
-                    s_data = this.get_space() + "<" + this.s_note + this.get_s_attr() + ">\n";
-                    for (int i = 0; i < this.list_item_child.Count; i++) s_data = s_data + this.list_item_child[i].get_code_full();
-                    s_data = s_data + this.get_space() + "</" + this.s_note + ">\n";
-                }
-            }
-            else
-            {
-                s_data = this.get_space() + "<" + this.s_note + this.get_s_attr() + ">\n";
-                for (int i = 0; i < this.list_item_child.Count; i++) s_data = s_data + this.list_item_child[i].get_code_full();
-                s_data = s_data + this.get_space() + "</" + this.s_note + ">\n";
-            }
+            s_data = this.get_space() + "<" + this.s_note + this.get_s_attr() + ">\n";
+            for (int i = 0; i < this.list_item_child.Count; i++) if(this.list_item_child[i]!=null) s_data += this.list_item_child[i].get_code_full();
+            s_data = s_data + this.get_space() + "</" + this.s_note + ">\n";
 
         }
         return s_data;
@@ -147,13 +132,14 @@ public class Xml_Item : MonoBehaviour
 
     public string get_code_short()
     {
-        string s_data;
+        string s_data = "";
         if (this.type == XmlNodeType.Text)
         {
             s_data = this.s_note;
         }
         else
         {
+            /*
             if (this.list_item_child.Count == 1)
             {
                 Xml_Item xml_nodes = this.list_item_child[0];
@@ -171,7 +157,11 @@ public class Xml_Item : MonoBehaviour
                 s_data = "<" + this.s_note + this.get_s_attr() + ">";
                 for (int i = 0; i < this.list_item_child.Count; i++)s_data = s_data + this.list_item_child[i].get_code_short();
                 s_data = s_data + "</" + this.s_note + ">";
-            }
+            }*/
+
+                s_data = "<" + this.s_note + this.get_s_attr() + ">";
+                for (int i = 0; i < this.list_item_child.Count; i++) if (this.list_item_child[i]!=null) s_data+=this.list_item_child[i].get_code_short();
+                s_data+="</" + this.s_note + ">";
         }
 
         return s_data;
@@ -194,6 +184,17 @@ public class Xml_Item : MonoBehaviour
     public List<Xml_Item> get_list_child()
     {
         return this.list_item_child;
+    }
+
+    public void Delete_all_child()
+    {
+        for (int i = 0; i < list_item_child.Count; i++)
+        {
+            if(this.list_item_child[i]!=null)this.list_item_child[i].Delete_all_child();
+            Destroy(this.list_item_child[i].gameObject);
+        }
+        this.list_item_child.Clear();
+        this.list_item_child= null;
     }
 
     public void btn_delete()

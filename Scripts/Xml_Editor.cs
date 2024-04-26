@@ -1,11 +1,9 @@
 using Carrot;
 using SimpleFileBrowser;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Xml;
-using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -585,14 +583,10 @@ public class Xml_Editor : MonoBehaviour
         app.carrot.play_sound_click();
         app.carrot.Show_msg(app.carrot.L("delete", "Delete"), app.carrot.L("n_delete_question", "Are you sure you want to remove this item?"), () =>
         {
-            List<Xml_Item> list_child= xml_item.get_list_child();
-            for (int i = 0; i < list_child.Count; i++)
-            {
-               if(list_child[i]!=null) Destroy(list_child[i].gameObject);
-            }
+            xml_item.Delete_all_child();
             Destroy(xml_item.gameObject);
+            Destroy(xml_item);
             box?.close();
-            box_sub?.close();
         });
     }
 
