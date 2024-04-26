@@ -113,7 +113,7 @@ public class Xml_Editor : MonoBehaviour
 
         if (is_create_root)
         {
-            this.xml_root = this.add_note(XmlNodeType.Element, "root", null);
+            this.xml_root = this.Add_note(XmlNodeType.Element, "root", null);
             this.check_mode_code();
         }
     }
@@ -164,9 +164,9 @@ public class Xml_Editor : MonoBehaviour
         this.app.carrot.play_sound_click();
         Xml_Item xml_sel = this.box_add.get_xml_cur();
         if(box_add.get_type()==XmlNodeType.Text)
-            this.add_note(box_add.get_type(), this.box_add.get_value(), xml_sel);
+            this.Add_note(box_add.get_type(), this.box_add.get_value(), xml_sel);
         else
-            this.add_note(box_add.get_type(), this.box_add.get_name(), xml_sel);
+            this.Add_note(box_add.get_type(), this.box_add.get_name(), xml_sel);
         this.box_add.btn_close();
         this.update_index_ui_emp_xml();
     }
@@ -189,7 +189,7 @@ public class Xml_Editor : MonoBehaviour
         }
     }
 
-    private Xml_Item add_note(XmlNodeType type,string s_val,Xml_Item item_xml_father)
+    private Xml_Item Add_note(XmlNodeType type,string s_val,Xml_Item item_xml_father)
     {
         GameObject obj_note = Instantiate(this.xml_item_prefab);
         obj_note.transform.SetParent(this.tr_all_obj);
@@ -198,7 +198,7 @@ public class Xml_Editor : MonoBehaviour
         obj_note.GetComponent<Xml_Item>().set_title(this.box_add.get_value());
 
         Xml_Item xml_p = obj_note.GetComponent<Xml_Item>();
-        xml_p.on_load(type, item_xml_father);
+        xml_p.On_load(type, item_xml_father);
         xml_p.set_title(s_val);
         return xml_p;
     }
@@ -342,16 +342,16 @@ public class Xml_Editor : MonoBehaviour
 
             if (xml_node_father == null)
             {
-                xml_father = this.add_note(XmlNodeType.Element, node.Name, xml_node_father);
+                xml_father = this.Add_note(XmlNodeType.Element, node.Name, xml_node_father);
                 xml_father.obj_btn_delete.SetActive(false);
                 this.xml_root = xml_father;
             }
             else
             {
                 if (node.NodeType == XmlNodeType.Text)
-                    xml_father = this.add_note(node.NodeType, node.InnerText, xml_node_father);
+                    xml_father = this.Add_note(node.NodeType, node.InnerText, xml_node_father);
                 else
-                    xml_father = this.add_note(node.NodeType, node.Name, xml_node_father);
+                    xml_father = this.Add_note(node.NodeType, node.Name, xml_node_father);
             }
 
             if (node.Attributes != null)
@@ -603,6 +603,7 @@ public class Xml_Editor : MonoBehaviour
         for (int i = 0; i < list_attr.Count; i++)
         {
             var index_item = i;
+            var xml_item_data = xml_item;
             Carrot_Box_Item item_attr = this.box_sub.create_item("item_attr_" + i);
             item_attr.set_icon(xml_item.sp_icon_node_attr);
             item_attr.set_title(list_attr[i].get_s_name());
@@ -614,7 +615,7 @@ public class Xml_Editor : MonoBehaviour
             Carrot_Box_Btn_Item btn_del = item_attr.create_item();
             btn_del.set_color(Color.red);
             btn_del.set_icon(app.carrot.sp_icon_del_data);
-            btn_del.set_act(() => Delete_attr_node(index_item, xml_item, item_attr.gameObject));
+            btn_del.set_act(() => Delete_attr_node(index_item, xml_item_data, item_attr.gameObject));
         }
     }
 
@@ -622,6 +623,7 @@ public class Xml_Editor : MonoBehaviour
     {
         xml_item.Delete_attr(index);
         Destroy(item_obj);
+        this.box_sub?.close();
     }
 
     private void show_edit_attr(Item_Attr attr)

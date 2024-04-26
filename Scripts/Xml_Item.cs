@@ -41,7 +41,7 @@ public class Xml_Item : MonoBehaviour
     private List<Item_Attr> list_item_attr;
 
 
-    public void on_load(XmlNodeType type_node,Xml_Item xml_item_father)
+    public void On_load(XmlNodeType type_node,Xml_Item xml_item_father)
     {
         this.list_item_child = new List<Xml_Item>();
         this.list_item_attr = new List<Item_Attr>();
@@ -104,6 +104,11 @@ public class Xml_Item : MonoBehaviour
     {
         this.txt_title.text = s_title;
         this.s_note = s_title;
+    }
+
+    public void set_tip(string s_tip)
+    {
+        this.txt_tip.text = s_tip;
     }
 
     private string get_space()
@@ -249,7 +254,17 @@ public class Xml_Item : MonoBehaviour
 
     public void Delete_attr(int index)
     {
-        this.list_item_attr.RemoveAt(index);
-        Destroy(this.list_item_attr[index].gameObject);
+        if (this.list_item_attr[index] != null)
+        {
+            Destroy(this.list_item_attr[index].gameObject);
+            this.list_item_attr.RemoveAt(index);
+        }
+
+        this.list_item_attr.Clear();
+        
+        foreach(Transform child in this.tr_attr_body)
+        {
+            this.list_item_attr.Add(child.GetComponent<Item_Attr>());
+        }
     }
 }
