@@ -585,7 +585,7 @@ public class Xml_Editor : MonoBehaviour
             xml_item.Delete_all_child();
             Destroy(xml_item.gameObject);
             Destroy(xml_item);
-            box?.close();
+            this.box?.close();
         });
     }
 
