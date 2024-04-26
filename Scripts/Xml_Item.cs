@@ -246,4 +246,10 @@ public class Xml_Item : MonoBehaviour
     {
         return this.list_item_attr;
     }
+
+    public void Delete_attr(int index)
+    {
+        this.list_item_attr.RemoveAt(index);
+        Destroy(this.list_item_attr[index].gameObject);
+    }
 }

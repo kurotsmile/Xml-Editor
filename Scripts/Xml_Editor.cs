@@ -120,6 +120,7 @@ public class Xml_Editor : MonoBehaviour
 
     public void closer_project()
     {
+        app.carrot.play_sound_click();
         this.save_project();
         this.panel_editor.SetActive(false);
     }
@@ -601,6 +602,7 @@ public class Xml_Editor : MonoBehaviour
         List<Item_Attr> list_attr = xml_item.get_list_item_attr();
         for (int i = 0; i < list_attr.Count; i++)
         {
+            var index_item = i;
             Carrot_Box_Item item_attr = this.box_sub.create_item("item_attr_" + i);
             item_attr.set_icon(xml_item.sp_icon_node_attr);
             item_attr.set_title(list_attr[i].get_s_name());
@@ -608,7 +610,18 @@ public class Xml_Editor : MonoBehaviour
 
             var attr_set = list_attr[i];
             item_attr.set_act(() => show_edit_attr(attr_set));
+
+            Carrot_Box_Btn_Item btn_del = item_attr.create_item();
+            btn_del.set_color(Color.red);
+            btn_del.set_icon(app.carrot.sp_icon_del_data);
+            btn_del.set_act(() => Delete_attr_node(index_item, xml_item, item_attr.gameObject));
         }
+    }
+
+    private void Delete_attr_node(int index,Xml_Item xml_item,GameObject item_obj)
+    {
+        xml_item.Delete_attr(index);
+        Destroy(item_obj);
     }
 
     private void show_edit_attr(Item_Attr attr)
