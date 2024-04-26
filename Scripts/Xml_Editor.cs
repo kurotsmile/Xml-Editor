@@ -382,7 +382,10 @@ public class Xml_Editor : MonoBehaviour
     public void save_project()
     {
         app.carrot.ads.show_ads_Interstitial();
-        this.app.xml_manager.save_project(this.index_edit, this.xml_root.get_code_short());
+        if(this.xml_root!=null) 
+            this.app.xml_manager.save_project(this.index_edit, this.xml_root.get_code_short());
+        else
+            this.app.xml_manager.save_project(this.index_edit, "<root></root>");
     }
 
     public void btn_export_file_xml()
@@ -617,8 +620,12 @@ public class Xml_Editor : MonoBehaviour
 
     public void Btn_save()
     {
+        app.carrot.ads.show_ads_Interstitial();
         app.carrot.play_sound_click();
-        PlayerPrefs.SetString("xml_" + this.index_edit + "_data", this.xml_root.get_code_short());
+        if(this.xml_root!=null)
+            PlayerPrefs.SetString("xml_" + this.index_edit + "_data", this.xml_root.get_code_short());
+        else
+            PlayerPrefs.SetString("xml_" + this.index_edit + "_data", "<root></root>");
         app.carrot.Show_msg(app.carrot.L("editor", "Data design"),app.carrot.L("p_update_success","Successful project update!"), Msg_Icon.Success);
     }
 }
