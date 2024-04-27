@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Apps : MonoBehaviour
 {
     public Carrot.Carrot carrot;
+    public Carrot.Carrot_File file;
     public Xml_Editor xml;
     public Xml_Manager xml_manager;
 
@@ -12,18 +13,62 @@ public class Apps : MonoBehaviour
     public InputField inp_xml_name;
     public AudioSource sound_background;
     private int scores_rank = 0;
+    private string link_deep_app = "";
 
     void Start()
     {
+        this.link_deep_app = Application.absoluteURL;
+        Application.deepLinkActivated += onDeepLinkActivated;
+
         this.carrot.Load_Carrot(this.check_exit_app);
         this.carrot.act_after_delete_all_data = this.act_delete_all_data;
         this.carrot.game.load_bk_music(this.sound_background);
+
+        if (carrot.os_app == OS.Android)
+            file.type = Carrot_File_Type.SimpleFileBrowser;
+        else 
+            file.type = Carrot_File_Type.StandaloneFileBrowser;
 
         this.xml.on_load();
         this.xml_manager.on_load();
 
         this.scores_rank = PlayerPrefs.GetInt("scores_rank", 0);
     }
+
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus) this.carrot.delay_function(3f, this.check_link_deep_app);
+    }
+
+    private void onDeepLinkActivated(string url)
+    {
+        this.link_deep_app = url;
+        if (this.carrot != null) this.carrot.delay_function(1f, this.check_link_deep_app);
+    }
+
+    public void check_link_deep_app()
+    {
+        if (this.link_deep_app.Trim() != "")
+        {
+            if (this.carrot.is_online())
+            {
+                if (this.link_deep_app.Contains("codexml:"))
+                {
+                    string id_project = this.link_deep_app.Replace("codexml://show/", "");
+                    Debug.Log("Get Project id:" + id_project);
+                    xml_manager.Get_project_by_id(id_project);
+                    this.link_deep_app = "";
+                }
+            }
+        }
+    }
+
+    [ContextMenu("Test Deep Link")]
+    public void test_deep_link()
+    {
+        this.onDeepLinkActivated("codexml://show/code033fd7e38e374ed89872e2c81b845c34");
+    }
+
 
     private void check_exit_app()
     {

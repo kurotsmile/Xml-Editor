@@ -276,9 +276,11 @@ public class Xml_Editor : MonoBehaviour
     private void Act_import_from_file()
     {
         app.carrot.play_sound_click();
-        FileBrowser.SetFilters(true, new FileBrowser.Filter("XML data", ".xml", ".rdf", ".rss"), new FileBrowser.Filter("XHTML data", ".xhtml", ".xsl", ".atom"));
-        FileBrowser.SetDefaultFilter(".xml");
-        FileBrowser.ShowLoadDialog(Act_load_file_xml_done, Act_load_file_xml_cancel, FileBrowser.PickMode.Files, false);
+        Carrot_File_Query q = new Carrot_File_Query();
+        q.Add_filter("XML data", "xml", "rdf", "rss");
+        q.Add_filter("XHTML data", "xhtml", "xsl", "atom");
+        q.SetDefaultFilter("xml");
+        app.file.Open_file(q, Act_load_file_xml_done, Act_load_file_xml_cancel);
     }
 
     private void Act_load_file_xml_done(string[] path)
@@ -398,9 +400,11 @@ public class Xml_Editor : MonoBehaviour
     public void btn_export_file_xml()
     {
         this.app.carrot.play_sound_click();
-        FileBrowser.SetFilters(true, new FileBrowser.Filter("XML data", ".xml", ".rdf", ".rss"), new FileBrowser.Filter("XHTML data", ".xhtml", ".xsl", ".atom"));
-        FileBrowser.SetDefaultFilter(".xml");
-        FileBrowser.ShowSaveDialog(Export_file_xml_done, Export_file_xml_cancel,FileBrowser.PickMode.Files,false);
+        Carrot_File_Query q = new();
+        q.Add_filter("XML data", "xml", "rdf", "rss");
+        q.Add_filter("XHTML data", "xhtml", "xsl", "atom");
+        q.SetDefaultFilter("xml");
+        this.app.file.Save_file(q,Export_file_xml_done, Export_file_xml_cancel);
     }
 
     private void Export_file_xml_done(string[] s_path)

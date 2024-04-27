@@ -1,4 +1,5 @@
 using Carrot;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -198,5 +199,19 @@ public class Xml_Manager : MonoBehaviour
     {
         apps.carrot.Show_msg(apps.carrot.L("list_p_online", "List of projects backed up online"), apps.carrot.L("p_delete_success","Delete online project success"), Msg_Icon.Success);
         if (this.obj_box_item_temp != null) Destroy(this.obj_box_item_temp);
+    }
+
+    internal void Get_project_by_id(string id_project)
+    {
+        apps.carrot.show_loading();
+        apps.carrot.server.Get_doc_by_path("code", id_project, Get_project_done, apps.Act_server_fail);
+    }
+
+    private void Get_project_done(string s_data)
+    {
+        apps.carrot.hide_loading();
+        Fire_Document fd = new(s_data);
+        IDictionary data_project=fd.Get_IDictionary();
+        this.Act_download_project(data_project);
     }
 }
