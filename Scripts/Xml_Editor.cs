@@ -41,6 +41,7 @@ public class Xml_Editor : MonoBehaviour
     public Sprite sp_icon_export_file_xml;
     public Sprite sp_icon_import_file_xml;
     public Sprite sp_icon_import_url_xml;
+    public Sprite sp_icon_menu;
 
     private bool is_mode_editor = true;
     private bool is_mode_code_full = true;
@@ -564,6 +565,7 @@ public class Xml_Editor : MonoBehaviour
 
         app.carrot.play_sound_click();
         this.box = app.carrot.Create_Box("box_menu");
+        this.box.set_icon(this.sp_icon_menu);
         this.box.set_title(app.carrot.L("n_menu","Menu")+" - (" + item_xml.get_s_nodes() + ")");
 
         Carrot.Carrot_Box_Item item_edit = this.box.create_item("i_edit");

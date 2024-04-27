@@ -3194,7 +3194,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 59.110027, y: -20.75}
+  m_AnchoredPosition: {x: 59.110016, y: -20.75}
   m_SizeDelta: {x: 112.220055, y: 35.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5345595849441201599
@@ -9777,6 +9777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carrot: {fileID: 0}
+  file: {fileID: 0}
   xml: {fileID: 4807859973165492694}
   xml_manager: {fileID: 5039372474334708723}
   inp_xml_name: {fileID: 5020570592152491163}
@@ -9818,6 +9819,7 @@ MonoBehaviour:
   sp_icon_export_file_xml: {fileID: 21300000, guid: 9b872615a741e3e44b15713bae954dab, type: 3}
   sp_icon_import_file_xml: {fileID: 21300000, guid: a92f3cf84f7e7df4e97d3b5fd9d81ccb, type: 3}
   sp_icon_import_url_xml: {fileID: 21300000, guid: 4dbf89a2d9f12fc42900f5777377fe4e, type: 3}
+  sp_icon_menu: {fileID: 21300000, guid: 134583192f4564a45a9bebbbc27d1939, type: 3}
 --- !u!114 &5039372474334708723
 MonoBehaviour:
   m_ObjectHideFlags: 0
