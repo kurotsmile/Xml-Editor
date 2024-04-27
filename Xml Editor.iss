@@ -4,7 +4,7 @@
 #define MyAppName "Xml Editor"
 #define MyAppVersion "0.8"
 #define MyAppPublisher "Carrot Store"
-#define MyAppURL "https://carrotstore.web.app/?page=app&id=Xml%20Editor"
+#define MyAppURL "https://carrotstore.web.app/?page=app&id="+MyAppName
 #define MyAppExeName MyAppName+".exe"
 #define MyAppAssocName MyAppName + ""
 #define MyAppAssocExt ".codexml"
