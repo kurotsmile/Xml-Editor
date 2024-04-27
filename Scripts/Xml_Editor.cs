@@ -1,5 +1,6 @@
 using Carrot;
 using SimpleFileBrowser;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -45,6 +46,7 @@ public class Xml_Editor : MonoBehaviour
     private bool is_mode_code_full = true;
     private int index_edit = -1;
     private Xml_Item xml_root;
+    private Xml_Item xml_item_edit=null;
     private string s_name_project;
 
     private Carrot.Carrot_Box box;
@@ -337,9 +339,18 @@ public class Xml_Editor : MonoBehaviour
         this.inp_editor_text.text = xmlString;
         this.app.carrot.clear_contain(this.tr_all_obj);
         XmlDocument xmlDoc = new();
-        xmlDoc.LoadXml(xmlString);
-        XmlNode node = xmlDoc.SelectSingleNode("*");
-        parse_note_child(node,null);
+        try
+        {
+            xmlDoc.LoadXml(xmlString);
+            XmlNode node = xmlDoc.SelectSingleNode("*");
+            parse_note_child(node, null);
+        }
+        catch(XmlException error)
+        {
+            app.carrot.play_vibrate();
+            app.carrot.Show_msg("Error",error.Message,Msg_Icon.Error);
+        }
+        
     }
 
     private void parse_note_child(XmlNode node, Xml_Item xml_node_father)
@@ -411,7 +422,7 @@ public class Xml_Editor : MonoBehaviour
     {
         this.app.carrot.play_vibrate();
         FileBrowserHelpers.WriteTextToFile(s_path[0], this.xml_root.get_code_short());
-        this.box_input = this.app.carrot.show_input(app.carrot.L("export","Xml Export"), "Exported xml file successfully at path ", s_path[0]);
+        this.box_input = this.app.carrot.show_input(app.carrot.L("export","Xml Export"), app.carrot.L("export_success","Exported xml file successfully!"), s_path[0]);
         this.box_input.set_icon(this.sp_icon_export_file_xml);
         this.box_input.set_act_done(Act_close_msg_export);
     }
@@ -549,6 +560,8 @@ public class Xml_Editor : MonoBehaviour
 
     public void show_menu_node(Xml_Item item_xml)
     {
+        this.xml_item_edit = item_xml;
+
         app.carrot.play_sound_click();
         this.box = app.carrot.Create_Box("box_menu");
         this.box.set_title(app.carrot.L("n_menu","Menu")+" - (" + item_xml.get_s_nodes() + ")");
@@ -573,14 +586,13 @@ public class Xml_Editor : MonoBehaviour
                 box?.close();
             });
 
-            List<Item_Attr> list_attr = item_xml.get_list_item_attr();
-            if (list_attr.Count > 0)
+            if (item_xml.get_list_item_attr().Count>0)
             {
                 Carrot.Carrot_Box_Item item_list_attr = box.create_item("i_list_attr");
                 item_list_attr.set_icon(item_xml.sp_icon_node_list_attr);
                 item_list_attr.set_title(app.carrot.L("n_list_attr", "List attributes"));
                 item_list_attr.set_tip(app.carrot.L("n_list_attr_tip","Displays a list of node's attributes"));
-                item_list_attr.set_act(()=> btn_show_list_attr(item_xml));
+                item_list_attr.set_act(()=> btn_show_list_attr());
             }
         }
 
@@ -603,19 +615,18 @@ public class Xml_Editor : MonoBehaviour
         });
     }
 
-    public void btn_show_list_attr(Xml_Item xml_item)
+    public void btn_show_list_attr()
     {
         this.box_sub = app.carrot.Create_Box("box_attr");
-        this.box_sub.set_icon(xml_item.sp_icon_node_list_attr);
+        this.box_sub.set_icon(xml_item_edit.sp_icon_node_list_attr);
         this.box_sub.set_title(app.carrot.L("n_list_attr", "List attributes"));
 
-        List<Item_Attr> list_attr = xml_item.get_list_item_attr();
+        List<Item_Attr> list_attr = xml_item_edit.get_list_item_attr();
         for (int i = 0; i < list_attr.Count; i++)
         {
             var index_item = i;
-            var xml_item_data = xml_item;
             Carrot_Box_Item item_attr = this.box_sub.create_item("item_attr_" + i);
-            item_attr.set_icon(xml_item.sp_icon_node_attr);
+            item_attr.set_icon(xml_item_edit.sp_icon_node_attr);
             item_attr.set_title(list_attr[i].get_s_name());
             item_attr.set_tip(list_attr[i].get_s_value());
 
@@ -625,14 +636,13 @@ public class Xml_Editor : MonoBehaviour
             Carrot_Box_Btn_Item btn_del = item_attr.create_item();
             btn_del.set_color(Color.red);
             btn_del.set_icon(app.carrot.sp_icon_del_data);
-            btn_del.set_act(() => Delete_attr_node(index_item, xml_item_data, item_attr.gameObject));
+            btn_del.set_act(() => Delete_attr_node(index_item));
         }
     }
 
-    private void Delete_attr_node(int index,Xml_Item xml_item,GameObject item_obj)
+    private void Delete_attr_node(int index)
     {
-        xml_item.Delete_attr(index);
-        Destroy(item_obj);
+        this.xml_item_edit.Delete_attr(index);
         this.box_sub?.close();
     }
 

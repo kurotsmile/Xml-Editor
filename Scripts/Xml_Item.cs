@@ -253,17 +253,21 @@ public class Xml_Item : MonoBehaviour
 
     public void Delete_attr(int index)
     {
+        Debug.Log("Attr count:" + this.list_item_attr.Count);
         if (this.list_item_attr[index] != null)
         {
             Destroy(this.list_item_attr[index].gameObject);
-            this.list_item_attr.RemoveAt(index);
+            this.list_item_attr[index] = null;
         }
 
-        this.list_item_attr.Clear();
+        List<Item_Attr> list_new = new List<Item_Attr>();
         
-        foreach(Transform child in this.tr_attr_body)
+        for(int i=0;i<list_item_attr.Count;i++)
         {
-            this.list_item_attr.Add(child.GetComponent<Item_Attr>());
+            if(list_item_attr[i]!=null)list_new.Add(list_item_attr[i]);
         }
+        this.list_item_attr = list_new;
+        Debug.Log("Attr count:"+this.list_item_attr.Count);
+        if(this.list_item_attr.Count==0) this.panel_attr.SetActive(false);
     }
 }
