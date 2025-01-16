@@ -257,7 +257,7 @@ public class Xml_Editor : MonoBehaviour
 
     public void Show_import()
     {
-        app.carrot.ads.show_ads_Interstitial();
+        app.ads.show_ads_Interstitial();
         this.box = app.carrot.Create_Box();
         this.box.set_icon(this.app.carrot.icon_carrot_add);
         this.box.set_title(app.carrot.L("import","Import"));
@@ -300,7 +300,7 @@ public class Xml_Editor : MonoBehaviour
 
     private void import_project_from_url()
     {
-        this.box_input_project_url = this.app.carrot.show_input(app.carrot.L("import_url", "Import form Url"),app.carrot.L("import_url_address","Enter the url xml file (eg https://www.w3schools.com/xml/note.xml)"), s_name_project);
+        this.box_input_project_url = this.app.carrot.Show_input(app.carrot.L("import_url", "Import form Url"),app.carrot.L("import_url_address","Enter the url xml file (eg https://www.w3schools.com/xml/note.xml)"), s_name_project);
         this.box_input_project_url.set_act_done(act_import_project_done);
     }
 
@@ -402,7 +402,7 @@ public class Xml_Editor : MonoBehaviour
 
     public void save_project()
     {
-        app.carrot.ads.show_ads_Interstitial();
+        app.ads.show_ads_Interstitial();
         if(this.xml_root!=null) 
             this.app.xml_manager.save_project(this.index_edit, this.xml_root.get_code_short());
         else
@@ -423,7 +423,7 @@ public class Xml_Editor : MonoBehaviour
     {
         this.app.carrot.play_vibrate();
         FileBrowserHelpers.WriteTextToFile(s_path[0], this.xml_root.get_code_short());
-        this.box_input = this.app.carrot.show_input(app.carrot.L("export","Xml Export"), app.carrot.L("export_success","Exported xml file successfully!"), s_path[0]);
+        this.box_input = this.app.carrot.Show_input(app.carrot.L("export","Xml Export"), app.carrot.L("export_success","Exported xml file successfully!"), s_path[0]);
         this.box_input.set_icon(this.sp_icon_export_file_xml);
         this.box_input.set_act_done(Act_close_msg_export);
     }
@@ -657,7 +657,7 @@ public class Xml_Editor : MonoBehaviour
 
     public void Btn_save()
     {
-        app.carrot.ads.show_ads_Interstitial();
+        app.ads.show_ads_Interstitial();
         app.carrot.play_sound_click();
         if(this.xml_root!=null)
             PlayerPrefs.SetString("xml_" + this.index_edit + "_data", this.xml_root.get_code_short());

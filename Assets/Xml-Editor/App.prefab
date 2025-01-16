@@ -5038,9 +5038,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4027833906812619800}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 1
-  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -5090,8 +5089,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &4203051847156432030
 GameObject:
   m_ObjectHideFlags: 0
@@ -6468,6 +6471,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -9737,6 +9741,7 @@ GameObject:
   - component: {fileID: 4807859973165492694}
   - component: {fileID: 5039372474334708723}
   - component: {fileID: 6224405049266991570}
+  - component: {fileID: 3197004214973301579}
   m_Layer: 0
   m_Name: App
   m_TagString: Untagged
@@ -9780,6 +9785,7 @@ MonoBehaviour:
   file: {fileID: 0}
   xml: {fileID: 4807859973165492694}
   xml_manager: {fileID: 5039372474334708723}
+  ads: {fileID: 3197004214973301579}
   inp_xml_name: {fileID: 5020570592152491163}
   sound_background: {fileID: 313457742136934004}
 --- !u!114 &4807859973165492694
@@ -9898,6 +9904,24 @@ MonoBehaviour:
   - {fileID: 291817386542528862}
   - {fileID: 3633175188308405491}
   List_img_change_icon_lang: []
+--- !u!114 &3197004214973301579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7797634107860368332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7f9066179357c4e8f5543c8877a77c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  count_step_show_interstitial: 5
+  emplement_Ads: []
+  app_key: 1f0043bbd
+  id_banner: 0xaok6ihv6zd91d7
+  id_video: 6qgaxpjt6fu2g38u
+  id_rewarded: fv84j6ovly62yaer
 --- !u!1 &7834816495935092795
 GameObject:
   m_ObjectHideFlags: 0

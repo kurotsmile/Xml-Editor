@@ -8,6 +8,7 @@ public class Apps : MonoBehaviour
     public Carrot.Carrot_File file;
     public Xml_Editor xml;
     public Xml_Manager xml_manager;
+    public IronSourceAds ads;
 
     [Header("Ui")]
     public InputField inp_xml_name;
@@ -21,8 +22,12 @@ public class Apps : MonoBehaviour
         Application.deepLinkActivated += onDeepLinkActivated;
 
         this.carrot.Load_Carrot(this.check_exit_app);
+        this.ads.On_Load();
         this.carrot.act_after_delete_all_data = this.act_delete_all_data;
         this.carrot.game.load_bk_music(this.sound_background);
+        this.carrot.game.act_click_watch_ads_in_music_bk=this.ads.ShowRewardedVideo;
+        this.ads.onRewardedSuccess=this.carrot.game.OnRewardedSuccess;
+        this.carrot.act_buy_ads_success=this.ads.RemoveAds;
 
         if (carrot.os_app == OS.Android)
             file.type = Carrot_File_Type.SimpleFileBrowser;
@@ -105,12 +110,12 @@ public class Apps : MonoBehaviour
 
     public void btn_create_project()
     {
-        this.carrot.ads.show_ads_Interstitial();
+        this.ads.show_ads_Interstitial();
         this.carrot.play_sound_click();
         string s_file_name = this.inp_xml_name.text;
         if (s_file_name.Trim() != "")
         {
-            this.carrot.ads.Destroy_Banner_Ad();
+            this.ads.HideBannerAd();
             this.xml.create_project(this.inp_xml_name.text);
             this.add_scores_rank();
         } 
@@ -123,7 +128,7 @@ public class Apps : MonoBehaviour
 
     public void btn_show_create_project()
     {
-        this.carrot.ads.show_ads_Interstitial();
+        this.ads.show_ads_Interstitial();
         this.carrot.play_sound_click();
         this.xml_manager.panel_new_project.SetActive(true);
     }

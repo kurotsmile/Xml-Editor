@@ -110,7 +110,7 @@ public class Xml_Manager : MonoBehaviour
 
     public void Show_list_online_project()
     {
-        apps.carrot.ads.show_ads_Interstitial();
+        apps.ads.show_ads_Interstitial();
         string s_id_user_login = apps.carrot.user.get_id_user_login();
 
         if (s_id_user_login != "")
