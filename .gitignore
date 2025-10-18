@@ -11,3 +11,5 @@
 /.utmp
 /Logs
 /Logs
+/Assets/MobileDependencyResolver
+.DS_Store
